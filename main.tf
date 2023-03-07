@@ -106,4 +106,40 @@ resource "azurerm_batch_application" "main" {
   allow_updates       = true
 }
 
+resource "azurerm_batch_pool" "dev" {
+  name                = "dev"
+  resource_group_name = azurerm_resource_group.main.name
+  account_name        = azurerm_batch_account.main.name
+  display_name        = "dev"
+  vm_size             = "STANDARD_DS2_V2"
+  node_agent_sku_id   = "batch.node.ubuntu 22.04"
+  max_tasks_per_node  = 1
 
+  storage_image_reference {
+    publisher = "canonical"
+    offer     = "0001-com-ubuntu-server-jammy"
+    sku       = "22_04-lts-gen2"
+    version   = "22.04.202302280"
+  }
+
+  fixed_scale {
+
+  }
+
+  start_task {
+    command_line       = "echo 'Hello World from $env'"
+    task_retry_maximum = 1
+    wait_for_success   = true
+
+    common_environment_properties = {
+      env = "TEST"
+    }
+
+    user_identity {
+      auto_user {
+        elevation_level = "NonAdmin"
+        scope           = "Task"
+      }
+    }
+  }
+}
