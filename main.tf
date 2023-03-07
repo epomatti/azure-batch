@@ -104,6 +104,18 @@ resource "azurerm_batch_application" "main" {
   resource_group_name = azurerm_resource_group.main.name
   account_name        = azurerm_batch_account.main.name
   allow_updates       = true
+
+  lifecycle {
+    ignore_changes = [
+      default_version
+    ]
+  }
+}
+
+resource "azurerm_user_assigned_identity" "main" {
+  name                = "batch-pool-user"
+  location            = azurerm_resource_group.main.location
+  resource_group_name = azurerm_resource_group.main.name
 }
 
 resource "azurerm_batch_pool" "dev" {
@@ -115,6 +127,11 @@ resource "azurerm_batch_pool" "dev" {
   node_agent_sku_id   = "batch.node.ubuntu 22.04"
   max_tasks_per_node  = 1
 
+  identity {
+    type         = "UserAssigned"
+    identity_ids = [azurerm_user_assigned_identity.main.id]
+  }
+
   storage_image_reference {
     publisher = "canonical"
     offer     = "0001-com-ubuntu-server-jammy"
@@ -122,14 +139,23 @@ resource "azurerm_batch_pool" "dev" {
     version   = "22.04.202302280"
   }
 
-  fixed_scale {
+  data_disks {
+    lun                  = 0
+    caching              = "None"
+    disk_size_gb         = 10
+    storage_account_type = "Premium_LRS"
+  }
 
+  fixed_scale {
+    node_deallocation_method  = "TaskCompletion"
+    target_dedicated_nodes    = 1
+    target_low_priority_nodes = 0
   }
 
   start_task {
-    command_line     = "bash run.sh"
-    wait_for_success = true
-
+    command_line       = "bash run.sh"
+    wait_for_success   = true
+    task_retry_maximum = 1
     common_environment_properties = {
       env = "TEST"
     }
