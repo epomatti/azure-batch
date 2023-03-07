@@ -1,6 +1,6 @@
 variable "sys" {
   type    = string
-  default = "batchsandbox"
+  default = "fastbrainz"
 }
 
 variable "location" {

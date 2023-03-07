@@ -171,6 +171,10 @@ resource "azurerm_batch_pool" "dev" {
       }
     }
   }
+
+  network_configuration {
+    subnet_id = azurerm_subnet.main.id
+  }
 }
 
 resource "azurerm_batch_job" "dev" {
