@@ -110,6 +110,10 @@ resource "azurerm_batch_application" "main" {
       default_version
     ]
   }
+
+  depends_on = [
+    azurerm_role_assignment.batch
+  ]
 }
 
 resource "azurerm_user_assigned_identity" "main" {
@@ -170,7 +174,7 @@ resource "azurerm_batch_pool" "dev" {
 }
 
 resource "azurerm_batch_job" "dev" {
-  name          = "dev-job"
-  batch_pool_id = azurerm_batch_pool.dev.id
+  name               = "dev-job"
+  batch_pool_id      = azurerm_batch_pool.dev.id
   task_retry_maximum = 1
 }
