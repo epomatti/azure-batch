@@ -1,5 +1,7 @@
 # Azure Batch
 
+> You might need to increase your Batch quotas when first creating accounts and pools
+
 Create the account:
 
 ```sh
