@@ -158,7 +158,7 @@ resource "azurerm_batch_pool" "dev" {
   resource_group_name = azurerm_resource_group.main.name
   account_name        = azurerm_batch_account.main.name
   display_name        = "dev"
-  vm_size             = "STANDARD_DS2_V2"
+  vm_size             = "STANDARD_D2S_V3"
   node_agent_sku_id   = "batch.node.ubuntu 22.04"
   max_tasks_per_node  = 1
 
