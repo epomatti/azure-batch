@@ -9,7 +9,7 @@ terraform init
 terraform apply -auto-approve
 ```
 
-Upload the application:
+Upload the application package:
 
 ```sh
 az batch application package create \
@@ -18,11 +18,7 @@ az batch application package create \
   --application-name "molecular-analysis" \
   --package-file run.zip \
   --version-name "1.0"
-```
 
-In case you want to set the a different default version:
-
-```sh
 az batch application set \
   -n "bafastbrains" \
   -g "rg-fastbrains" \

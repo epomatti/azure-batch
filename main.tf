@@ -67,12 +67,36 @@ resource "azurerm_subnet_network_security_group_association" "main" {
 
 ### Storage ###
 
+# This will be used as auto-storage
 resource "azurerm_storage_account" "main" {
   name                     = "st${var.sys}789"
   resource_group_name      = azurerm_resource_group.main.name
   location                 = azurerm_resource_group.main.location
   account_tier             = "Standard"
   account_replication_type = "LRS"
+}
+
+# This will be a resource file from the blob
+resource "azurerm_storage_account" "jobfiles" {
+  name                     = "st${var.sys}res111"
+  resource_group_name      = azurerm_resource_group.main.name
+  location                 = azurerm_resource_group.main.location
+  account_tier             = "Standard"
+  account_replication_type = "LRS"
+}
+
+resource "azurerm_storage_container" "jobfiles" {
+  name                  = "jobfiles"
+  storage_account_name  = azurerm_storage_account.jobfiles.name
+  container_access_type = "private"
+}
+
+resource "azurerm_storage_blob" "molecules_zip" {
+  name                   = "molecules.zip"
+  storage_account_name   = azurerm_storage_account.jobfiles.name
+  storage_container_name = azurerm_storage_container.jobfiles.name
+  type                   = "Block"
+  source                 = "molecules.zip"
 }
 
 ### Batch ###
@@ -104,7 +128,6 @@ resource "azurerm_batch_application" "main" {
   resource_group_name = azurerm_resource_group.main.name
   account_name        = azurerm_batch_account.main.name
   allow_updates       = true
-  default_version     = "1.0"
 
   lifecycle {
     ignore_changes = [
@@ -121,6 +144,13 @@ resource "azurerm_user_assigned_identity" "main" {
   name                = "batch-pool-user"
   location            = azurerm_resource_group.main.location
   resource_group_name = azurerm_resource_group.main.name
+}
+
+# Adds permission for the job to read from the data storage
+resource "azurerm_role_assignment" "jobfiles" {
+  scope                = azurerm_storage_account.jobfiles.id
+  role_definition_name = "Storage Blob Data Contributor"
+  principal_id         = azurerm_user_assigned_identity.main.principal_id
 }
 
 resource "azurerm_batch_pool" "dev" {
@@ -171,6 +201,11 @@ resource "azurerm_batch_pool" "dev" {
         scope           = "Task"
       }
     }
+
+    resource_file {
+      storage_container_url     = "https://${azurerm_storage_container.jobfiles.storage_account_name}.blob.core.windows.net/${azurerm_storage_container.jobfiles.name}"
+      user_assigned_identity_id = azurerm_user_assigned_identity.main.id
+    }
   }
 
   network_configuration {
@@ -181,5 +216,5 @@ resource "azurerm_batch_pool" "dev" {
 resource "azurerm_batch_job" "dev" {
   name               = "dev-job"
   batch_pool_id      = azurerm_batch_pool.dev.id
-  task_retry_maximum = 1
+  task_retry_maximum = 1  
 }
