@@ -23,6 +23,16 @@ resource "azurerm_resource_group" "main" {
 }
 
 
+### Log Analytics Workspace ###
+resource "azurerm_log_analytics_workspace" "main" {
+  name                = "log-${var.sys}"
+  location            = azurerm_resource_group.main.location
+  resource_group_name = azurerm_resource_group.main.name
+  sku                 = "PerGB2018"
+  retention_in_days   = 30
+}
+
+
 ### Network ###
 
 resource "azurerm_network_security_group" "main" {
@@ -197,8 +207,8 @@ resource "azurerm_batch_pool" "dev" {
 
     user_identity {
       auto_user {
-        elevation_level = "NonAdmin"
-        scope           = "Task"
+        elevation_level = "Admin"
+        scope           = "Pool"
       }
     }
 
@@ -216,5 +226,5 @@ resource "azurerm_batch_pool" "dev" {
 resource "azurerm_batch_job" "dev" {
   name               = "dev-job"
   batch_pool_id      = azurerm_batch_pool.dev.id
-  task_retry_maximum = 1  
+  task_retry_maximum = 1
 }
