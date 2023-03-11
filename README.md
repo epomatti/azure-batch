@@ -13,17 +13,21 @@ Upload the application:
 
 ```sh
 az batch application package create \
-  -n "babatchsandbox" \
-  -g "rg-batchsandbox" \
-  --application-name "molecularanalysis" \
+  -n "bafastbrains" \
+  -g "rg-fastbrains" \
+  --application-name "molecular-analysis" \
   --package-file run.zip \
-  --version-name "2.0"
+  --version-name "1.0"
+```
 
+In case you want to set the a different default version:
+
+```sh
 az batch application set \
-  -n "babatchsandbox" \
-  -g "rg-batchsandbox" \
-  --application-name "molecularanalysis" \
-  --default-version "2.0"
+  -n "bafastbrains" \
+  -g "rg-fastbrains" \
+  --application-name "molecular-analysis" \
+  --default-version "<VERSION>"
 ```
 
 ## Reference

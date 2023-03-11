@@ -99,11 +99,12 @@ resource "azurerm_role_assignment" "batch" {
 }
 
 resource "azurerm_batch_application" "main" {
-  name                = "molecularanalysis"
+  name                = "molecular-analysis"
   display_name        = "Molecular Analysis"
   resource_group_name = azurerm_resource_group.main.name
   account_name        = azurerm_batch_account.main.name
   allow_updates       = true
+  default_version     = "1.0"
 
   lifecycle {
     ignore_changes = [
