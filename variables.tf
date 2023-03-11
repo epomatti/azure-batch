@@ -1,6 +1,6 @@
 variable "sys" {
   type    = string
-  default = "fastbrainz"
+  default = "fastbrains"
 }
 
 variable "location" {
