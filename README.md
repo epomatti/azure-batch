@@ -23,7 +23,16 @@ az batch application set \
   -n bafastbrains \
   -g rg-fastbrains \
   --application-name "molecular-analysis" \
-  --default-version "<VERSION>"
+  --default-version "1.0"
+```
+
+Set the application to the pool:
+
+```sh
+az batch pool set \
+  --account-name bafastbrains \
+  --pool-id dev \
+  --application-package-references "molecular-analysis#1.0"
 ```
 
 One option to easily interact with the CLI is to login to the Batch account:
