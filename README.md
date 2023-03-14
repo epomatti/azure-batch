@@ -11,7 +11,7 @@ terraform init
 terraform apply -auto-approve
 ```
 
-Configure your Bath account logs to be sent to the Log Analytics Workspace by setting up the Diagnostic Settings using the portal.
+Configure your Batch account logs to be sent to the Log Analytics Workspace by setting up the Diagnostic Settings using the portal.
 
 Upload the application package:
 
