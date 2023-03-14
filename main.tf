@@ -115,6 +115,7 @@ resource "azurerm_batch_account" "main" {
   name                = "ba${var.sys}"
   resource_group_name = azurerm_resource_group.main.name
   location            = azurerm_resource_group.main.location
+  # public_network_access_enabled = false
 
   storage_account_id                  = azurerm_storage_account.main.id
   storage_account_authentication_mode = "BatchAccountManagedIdentity"
@@ -123,6 +124,13 @@ resource "azurerm_batch_account" "main" {
 
   identity {
     type = "SystemAssigned"
+  }
+
+  # TODO: Change to private when ready
+  lifecycle {
+    ignore_changes = [
+      public_network_access_enabled
+    ]
   }
 }
 
@@ -220,6 +228,12 @@ resource "azurerm_batch_pool" "dev" {
 
   network_configuration {
     subnet_id = azurerm_subnet.main.id
+  }
+
+  lifecycle {
+    ignore_changes = [
+      fixed_scale[0].target_dedicated_nodes
+    ]
   }
 }
 
