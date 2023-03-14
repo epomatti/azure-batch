@@ -9,6 +9,8 @@ terraform init
 terraform apply -auto-approve
 ```
 
+To override TF variables create a `.auto.tfvars` file.
+
 Configure your Bath account logs to be sent to the Log Analytics Workspace by setting up the Diagnostic Settings using the portal.
 
 Upload the application package:
