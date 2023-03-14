@@ -2,14 +2,14 @@
 
 > You might need to increase your Batch quotas when first creating accounts and pools
 
+To override TF variables create a `.auto.tfvars` file.
+
 Create the account:
 
 ```sh
 terraform init
 terraform apply -auto-approve
 ```
-
-To override TF variables create a `.auto.tfvars` file.
 
 Configure your Bath account logs to be sent to the Log Analytics Workspace by setting up the Diagnostic Settings using the portal.
 
