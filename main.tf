@@ -206,11 +206,11 @@ resource "azurerm_batch_pool" "dev" {
   }
 
   start_task {
-    command_line       = "bash run.sh"
+    command_line       = "echo test"
     wait_for_success   = true
     task_retry_maximum = 1
     common_environment_properties = {
-      env = "TEST"
+      TEST_MESSAGE = "TEST"
     }
 
     user_identity {
