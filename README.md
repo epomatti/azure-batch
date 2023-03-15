@@ -81,6 +81,8 @@ Additional functionality for the CLI is available through extensions:
 az extension add --name azure-batch-cli-extensions
 ```
 
+The Jumpbox already has System-Assigned Identity.
+
 ## Reference
 
 - [Azure Batch permissions](https://techcommunity.microsoft.com/t5/azure-paas-blog/the-usage-of-managed-identity-in-the-azure-batch-account-and/ba-p/3607014)
