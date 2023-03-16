@@ -35,25 +35,25 @@ resource "azurerm_log_analytics_workspace" "main" {
 
 ### Network ###
 
-resource "azurerm_network_security_group" "main" {
-  name                = "nsg-${var.sys}"
-  location            = azurerm_resource_group.main.location
-  resource_group_name = azurerm_resource_group.main.name
-}
+# resource "azurerm_network_security_group" "main" {
+#   name                = "nsg-${var.sys}"
+#   location            = azurerm_resource_group.main.location
+#   resource_group_name = azurerm_resource_group.main.name
+# }
 
-resource "azurerm_network_security_rule" "internet" {
-  name                        = "rule-internet"
-  priority                    = 100
-  direction                   = "Inbound"
-  access                      = "Allow"
-  protocol                    = "Tcp"
-  source_port_range           = "*"
-  destination_port_range      = "*"
-  source_address_prefix       = "*"
-  destination_address_prefix  = "*"
-  resource_group_name         = azurerm_resource_group.main.name
-  network_security_group_name = azurerm_network_security_group.main.name
-}
+# resource "azurerm_network_security_rule" "internet" {
+#   name                        = "rule-internet"
+#   priority                    = 100
+#   direction                   = "Inbound"
+#   access                      = "Allow"
+#   protocol                    = "Tcp"
+#   source_port_range           = "*"
+#   destination_port_range      = "*"
+#   source_address_prefix       = "*"
+#   destination_address_prefix  = "*"
+#   resource_group_name         = azurerm_resource_group.main.name
+#   network_security_group_name = azurerm_network_security_group.main.name
+# }
 
 resource "azurerm_virtual_network" "main" {
   name                = "vnet-${var.sys}"
@@ -69,10 +69,10 @@ resource "azurerm_subnet" "main" {
   address_prefixes     = ["10.0.1.0/24"]
 }
 
-resource "azurerm_subnet_network_security_group_association" "main" {
-  subnet_id                 = azurerm_subnet.main.id
-  network_security_group_id = azurerm_network_security_group.main.id
-}
+# resource "azurerm_subnet_network_security_group_association" "main" {
+#   subnet_id                 = azurerm_subnet.main.id
+#   network_security_group_id = azurerm_network_security_group.main.id
+# }
 
 # Jumpbox
 resource "azurerm_network_security_group" "jumpbox" {
@@ -272,9 +272,9 @@ resource "azurerm_batch_pool" "dev" {
     }
   }
 
-  network_configuration {
-    subnet_id = azurerm_subnet.main.id
-  }
+  # network_configuration {
+  #   subnet_id = azurerm_subnet.main.id
+  # }
 
   lifecycle {
     ignore_changes = [

@@ -81,7 +81,12 @@ Additional functionality for the CLI is available through extensions:
 az extension add --name azure-batch-cli-extensions
 ```
 
-The Jumpbox already has System-Assigned Identity.
+The Jumpbox already has System-Assigned Identity. To use it:
+
+```sh
+# Using the System-Assigned identity within the VM
+az login --identity
+```
 
 ## Reference
 
