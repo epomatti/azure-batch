@@ -91,7 +91,7 @@ The Jumpbox already has System-Assigned Identity. To use it:
 az login --identity
 ```
 
-This is not required if you useTo interact with a private endpoint Batch/pools using the Jumpbox:
+This is not required if you use `az batch account login`, but another option to interact with a private endpoint Batch/pools using the Jumpbox:
 
 ```sh
 export AZURE_BATCH_ACCOUNT=""
