@@ -2,6 +2,8 @@
 
 > You might need to increase your Batch quotas when first creating accounts and pools
 
+<img src=".docs/batch.png" />
+
 To override TF variables create a `.auto.tfvars` file.
 
 Create the account:
@@ -10,6 +12,8 @@ Create the account:
 terraform init
 terraform apply -auto-approve
 ```
+
+ℹ️ The pool will be provisioned with 0 nodes. Adjust your preferences accordingly.
 
 Configure your Batch account logs to be sent to the Log Analytics Workspace by setting up the Diagnostic Settings using the portal.
 
@@ -47,6 +51,7 @@ az batch account login \
   --resource-group rg-fastbrains \
   --shared-key-auth
 ```
+Alternatively, if you need to use the keys, add `--shared-key-auth`.
 
 Run a task:
 
@@ -81,6 +86,28 @@ Additional functionality for the CLI is available through extensions:
 az extension add --name azure-batch-cli-extensions
 ```
 
+The Jumpbox already has System-Assigned Identity. To use it:
+
+```sh
+# Using the System-Assigned identity within the VM
+az login --identity
+```
+
+This is not required if you use `az batch account login`, but another option to interact with a private endpoint Batch/pools using the Jumpbox:
+
+```sh
+export AZURE_BATCH_ACCOUNT=""
+export AZURE_BATCH_ENDPOINT=""
+export AZURE_BATCH_ACCESS_KEY=""
+```
+
+Now it is possible to use the private endpoints:
+
+```
+az batch pool list
+```
+
 ## Reference
 
 - [Azure Batch permissions](https://techcommunity.microsoft.com/t5/azure-paas-blog/the-usage-of-managed-identity-in-the-azure-batch-account-and/ba-p/3607014)
+- [Private Endpoints + VM](https://learn.microsoft.com/en-us/troubleshoot/azure/general/azure-batch-pool-creation-failure#cause-1-public-network-access-is-disabled-but-batch-account-doesnt-have-private-endpoint)
