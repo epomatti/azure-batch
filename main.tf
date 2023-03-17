@@ -272,84 +272,84 @@ resource "azurerm_batch_application" "main" {
   ]
 }
 
-# resource "azurerm_user_assigned_identity" "main" {
-#   name                = "batch-pool-user"
-#   location            = azurerm_resource_group.main.location
-#   resource_group_name = azurerm_resource_group.main.name
-# }
+resource "azurerm_user_assigned_identity" "main" {
+  name                = "batch-pool-user"
+  location            = azurerm_resource_group.main.location
+  resource_group_name = azurerm_resource_group.main.name
+}
 
-# # Adds permission for the job to read from the data storage
-# resource "azurerm_role_assignment" "jobfiles" {
-#   scope                = azurerm_storage_account.jobfiles.id
-#   role_definition_name = "Storage Blob Data Contributor"
-#   principal_id         = azurerm_user_assigned_identity.main.principal_id
-# }
+# Adds permission for the job to read from the data storage
+resource "azurerm_role_assignment" "jobfiles" {
+  scope                = azurerm_storage_account.jobfiles.id
+  role_definition_name = "Storage Blob Data Contributor"
+  principal_id         = azurerm_user_assigned_identity.main.principal_id
+}
 
-# resource "azurerm_batch_pool" "dev" {
-#   name                = "dev"
-#   resource_group_name = azurerm_resource_group.main.name
-#   account_name        = azurerm_batch_account.main.name
-#   display_name        = "dev"
-#   vm_size             = var.batch_vm_size
-#   node_agent_sku_id   = "batch.node.ubuntu 22.04"
-#   max_tasks_per_node  = 1
+resource "azurerm_batch_pool" "dev" {
+  name                = "dev"
+  resource_group_name = azurerm_resource_group.main.name
+  account_name        = azurerm_batch_account.main.name
+  display_name        = "dev"
+  vm_size             = var.batch_vm_size
+  node_agent_sku_id   = "batch.node.ubuntu 22.04"
+  max_tasks_per_node  = 1
 
-#   identity {
-#     type         = "UserAssigned"
-#     identity_ids = [azurerm_user_assigned_identity.main.id]
-#   }
+  identity {
+    type         = "UserAssigned"
+    identity_ids = [azurerm_user_assigned_identity.main.id]
+  }
 
-#   storage_image_reference {
-#     publisher = "canonical"
-#     offer     = "0001-com-ubuntu-server-jammy"
-#     sku       = "22_04-lts-gen2"
-#     version   = "22.04.202303090"
-#   }
+  storage_image_reference {
+    publisher = "canonical"
+    offer     = "0001-com-ubuntu-server-jammy"
+    sku       = "22_04-lts-gen2"
+    version   = "22.04.202303090"
+  }
 
-#   data_disks {
-#     lun                  = 0
-#     caching              = "None"
-#     disk_size_gb         = 10
-#     storage_account_type = "Premium_LRS"
-#   }
+  data_disks {
+    lun                  = 0
+    caching              = "None"
+    disk_size_gb         = 10
+    storage_account_type = "Premium_LRS"
+  }
 
-#   fixed_scale {
-#     node_deallocation_method  = "TaskCompletion"
-#     target_dedicated_nodes    = 1
-#     target_low_priority_nodes = 0
-#   }
+  fixed_scale {
+    node_deallocation_method  = "TaskCompletion"
+    target_dedicated_nodes    = 0
+    target_low_priority_nodes = 0
+  }
 
-#   start_task {
-#     command_line       = "echo test"
-#     wait_for_success   = true
-#     task_retry_maximum = 1
-#     common_environment_properties = {
-#       TEST_MESSAGE = "TEST"
-#     }
+  start_task {
+    command_line       = "echo test"
+    wait_for_success   = true
+    task_retry_maximum = 1
+    common_environment_properties = {
+      TEST_MESSAGE = "TEST"
+    }
 
-#     user_identity {
-#       auto_user {
-#         elevation_level = "Admin"
-#         scope           = "Pool"
-#       }
-#     }
+    user_identity {
+      auto_user {
+        elevation_level = "Admin"
+        scope           = "Pool"
+      }
+    }
 
-#     resource_file {
-#       storage_container_url     = "https://${azurerm_storage_container.jobfiles.storage_account_name}.blob.core.windows.net/${azurerm_storage_container.jobfiles.name}"
-#       user_assigned_identity_id = azurerm_user_assigned_identity.main.id
-#     }
-#   }
+    resource_file {
+      storage_container_url     = "https://${azurerm_storage_container.jobfiles.storage_account_name}.blob.core.windows.net/${azurerm_storage_container.jobfiles.name}"
+      user_assigned_identity_id = azurerm_user_assigned_identity.main.id
+    }
+  }
 
-#   # network_configuration {
-#   #   subnet_id = azurerm_subnet.main.id
-#   # }
+  network_configuration {
+    subnet_id = azurerm_subnet.main.id
+  }
 
-#   lifecycle {
-#     ignore_changes = [
-#       fixed_scale[0].target_dedicated_nodes
-#     ]
-#   }
-# }
+  lifecycle {
+    ignore_changes = [
+      fixed_scale[0].target_dedicated_nodes
+    ]
+  }
+}
 
 # resource "azurerm_batch_job" "dev" {
 #   name               = "dev-job"

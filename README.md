@@ -11,6 +11,8 @@ terraform init
 terraform apply -auto-approve
 ```
 
+The pool will be provisioned with 0 nodes. Adjust your preferences accordingly.
+
 Configure your Batch account logs to be sent to the Log Analytics Workspace by setting up the Diagnostic Settings using the portal.
 
 Upload the application package:
