@@ -35,31 +35,47 @@ resource "azurerm_log_analytics_workspace" "main" {
 
 ### Network ###
 
-# resource "azurerm_network_security_group" "main" {
-#   name                = "nsg-${var.sys}"
-#   location            = azurerm_resource_group.main.location
-#   resource_group_name = azurerm_resource_group.main.name
-# }
-
-# resource "azurerm_network_security_rule" "internet" {
-#   name                        = "rule-internet"
-#   priority                    = 100
-#   direction                   = "Inbound"
-#   access                      = "Allow"
-#   protocol                    = "Tcp"
-#   source_port_range           = "*"
-#   destination_port_range      = "*"
-#   source_address_prefix       = "*"
-#   destination_address_prefix  = "*"
-#   resource_group_name         = azurerm_resource_group.main.name
-#   network_security_group_name = azurerm_network_security_group.main.name
-# }
-
 resource "azurerm_virtual_network" "main" {
   name                = "vnet-${var.sys}"
   address_space       = ["10.0.0.0/16"]
   location            = azurerm_resource_group.main.location
   resource_group_name = azurerm_resource_group.main.name
+}
+
+### Batch Subnet ###
+
+resource "azurerm_network_security_group" "batch" {
+  name                = "nsg-batch-${var.sys}"
+  location            = azurerm_resource_group.main.location
+  resource_group_name = azurerm_resource_group.main.name
+}
+
+resource "azurerm_network_security_rule" "batch_inbound" {
+  name                        = "batch-inbound"
+  priority                    = 100
+  direction                   = "Inbound"
+  access                      = "Allow"
+  protocol                    = "*"
+  source_port_range           = "*"
+  destination_port_range      = "*"
+  source_address_prefix       = "*"
+  destination_address_prefix  = "*"
+  resource_group_name         = azurerm_resource_group.main.name
+  network_security_group_name = azurerm_network_security_group.batch.name
+}
+
+resource "azurerm_network_security_rule" "batch_outbound" {
+  name                        = "batch-outbound"
+  priority                    = 100
+  direction                   = "Outbound"
+  access                      = "Allow"
+  protocol                    = "*"
+  source_port_range           = "*"
+  destination_port_range      = "*"
+  source_address_prefix       = "*"
+  destination_address_prefix  = "*"
+  resource_group_name         = azurerm_resource_group.main.name
+  network_security_group_name = azurerm_network_security_group.batch.name
 }
 
 resource "azurerm_subnet" "main" {
@@ -69,12 +85,13 @@ resource "azurerm_subnet" "main" {
   address_prefixes     = ["10.0.1.0/24"]
 }
 
-# resource "azurerm_subnet_network_security_group_association" "main" {
-#   subnet_id                 = azurerm_subnet.main.id
-#   network_security_group_id = azurerm_network_security_group.main.id
-# }
+resource "azurerm_subnet_network_security_group_association" "main" {
+  subnet_id                 = azurerm_subnet.main.id
+  network_security_group_id = azurerm_network_security_group.batch.id
+}
 
-# Jumpbox
+### Jumpbox Subnet ###
+
 resource "azurerm_network_security_group" "jumpbox" {
   name                = "nsg-jumpbox-${var.sys}"
   location            = azurerm_resource_group.main.location
@@ -155,13 +172,71 @@ resource "azurerm_storage_blob" "molecules_zip" {
   source                 = "molecules.zip"
 }
 
+### Batch Private Endpoints ###
+
+resource "azurerm_private_dns_zone" "batch" {
+  name                = "privatelink.batch.azure.com"
+  resource_group_name = azurerm_resource_group.main.name
+}
+
+resource "azurerm_private_dns_zone_virtual_network_link" "batch" {
+  name                  = "azurebatch-link"
+  resource_group_name   = azurerm_resource_group.main.name
+  private_dns_zone_name = azurerm_private_dns_zone.batch.name
+  virtual_network_id    = azurerm_virtual_network.main.id
+  registration_enabled  = true
+}
+
+resource "azurerm_private_endpoint" "batch_account" {
+  name                = "pe-batchaccount-${var.sys}"
+  location            = azurerm_resource_group.main.location
+  resource_group_name = azurerm_resource_group.main.name
+  subnet_id           = azurerm_subnet.main.id
+
+  private_dns_zone_group {
+    name = azurerm_private_dns_zone.batch.name
+    private_dns_zone_ids = [
+      azurerm_private_dns_zone.batch.id
+    ]
+  }
+
+  private_service_connection {
+    name                           = "batch-account"
+    private_connection_resource_id = azurerm_batch_account.main.id
+    is_manual_connection           = false
+    subresource_names              = ["batchAccount"]
+  }
+}
+
+resource "azurerm_private_endpoint" "node_management" {
+  name                = "pe-nodemanagement-${var.sys}"
+  location            = azurerm_resource_group.main.location
+  resource_group_name = azurerm_resource_group.main.name
+  subnet_id           = azurerm_subnet.main.id
+
+  private_dns_zone_group {
+    name = azurerm_private_dns_zone.batch.name
+    private_dns_zone_ids = [
+      azurerm_private_dns_zone.batch.id
+    ]
+  }
+
+  private_service_connection {
+    name                           = "node-management"
+    private_connection_resource_id = azurerm_batch_account.main.id
+    is_manual_connection           = false
+    subresource_names              = ["nodeManagement"]
+  }
+}
+
+
 ### Batch ###
 
 resource "azurerm_batch_account" "main" {
-  name                = "ba${var.sys}"
-  resource_group_name = azurerm_resource_group.main.name
-  location            = azurerm_resource_group.main.location
-  # public_network_access_enabled = false
+  name                          = "ba${var.sys}"
+  resource_group_name           = azurerm_resource_group.main.name
+  location                      = azurerm_resource_group.main.location
+  public_network_access_enabled = var.batch_account_public
 
   storage_account_id                  = azurerm_storage_account.main.id
   storage_account_authentication_mode = "BatchAccountManagedIdentity"
@@ -170,13 +245,6 @@ resource "azurerm_batch_account" "main" {
 
   identity {
     type = "SystemAssigned"
-  }
-
-  # TODO: Change to private when ready
-  lifecycle {
-    ignore_changes = [
-      public_network_access_enabled
-    ]
   }
 }
 
@@ -204,90 +272,90 @@ resource "azurerm_batch_application" "main" {
   ]
 }
 
-resource "azurerm_user_assigned_identity" "main" {
-  name                = "batch-pool-user"
-  location            = azurerm_resource_group.main.location
-  resource_group_name = azurerm_resource_group.main.name
-}
+# resource "azurerm_user_assigned_identity" "main" {
+#   name                = "batch-pool-user"
+#   location            = azurerm_resource_group.main.location
+#   resource_group_name = azurerm_resource_group.main.name
+# }
 
-# Adds permission for the job to read from the data storage
-resource "azurerm_role_assignment" "jobfiles" {
-  scope                = azurerm_storage_account.jobfiles.id
-  role_definition_name = "Storage Blob Data Contributor"
-  principal_id         = azurerm_user_assigned_identity.main.principal_id
-}
+# # Adds permission for the job to read from the data storage
+# resource "azurerm_role_assignment" "jobfiles" {
+#   scope                = azurerm_storage_account.jobfiles.id
+#   role_definition_name = "Storage Blob Data Contributor"
+#   principal_id         = azurerm_user_assigned_identity.main.principal_id
+# }
 
-resource "azurerm_batch_pool" "dev" {
-  name                = "dev"
-  resource_group_name = azurerm_resource_group.main.name
-  account_name        = azurerm_batch_account.main.name
-  display_name        = "dev"
-  vm_size             = var.batch_vm_size
-  node_agent_sku_id   = "batch.node.ubuntu 22.04"
-  max_tasks_per_node  = 1
+# resource "azurerm_batch_pool" "dev" {
+#   name                = "dev"
+#   resource_group_name = azurerm_resource_group.main.name
+#   account_name        = azurerm_batch_account.main.name
+#   display_name        = "dev"
+#   vm_size             = var.batch_vm_size
+#   node_agent_sku_id   = "batch.node.ubuntu 22.04"
+#   max_tasks_per_node  = 1
 
-  identity {
-    type         = "UserAssigned"
-    identity_ids = [azurerm_user_assigned_identity.main.id]
-  }
+#   identity {
+#     type         = "UserAssigned"
+#     identity_ids = [azurerm_user_assigned_identity.main.id]
+#   }
 
-  storage_image_reference {
-    publisher = "canonical"
-    offer     = "0001-com-ubuntu-server-jammy"
-    sku       = "22_04-lts-gen2"
-    version   = "22.04.202303090"
-  }
+#   storage_image_reference {
+#     publisher = "canonical"
+#     offer     = "0001-com-ubuntu-server-jammy"
+#     sku       = "22_04-lts-gen2"
+#     version   = "22.04.202303090"
+#   }
 
-  data_disks {
-    lun                  = 0
-    caching              = "None"
-    disk_size_gb         = 10
-    storage_account_type = "Premium_LRS"
-  }
+#   data_disks {
+#     lun                  = 0
+#     caching              = "None"
+#     disk_size_gb         = 10
+#     storage_account_type = "Premium_LRS"
+#   }
 
-  fixed_scale {
-    node_deallocation_method  = "TaskCompletion"
-    target_dedicated_nodes    = 1
-    target_low_priority_nodes = 0
-  }
+#   fixed_scale {
+#     node_deallocation_method  = "TaskCompletion"
+#     target_dedicated_nodes    = 1
+#     target_low_priority_nodes = 0
+#   }
 
-  start_task {
-    command_line       = "echo test"
-    wait_for_success   = true
-    task_retry_maximum = 1
-    common_environment_properties = {
-      TEST_MESSAGE = "TEST"
-    }
+#   start_task {
+#     command_line       = "echo test"
+#     wait_for_success   = true
+#     task_retry_maximum = 1
+#     common_environment_properties = {
+#       TEST_MESSAGE = "TEST"
+#     }
 
-    user_identity {
-      auto_user {
-        elevation_level = "Admin"
-        scope           = "Pool"
-      }
-    }
+#     user_identity {
+#       auto_user {
+#         elevation_level = "Admin"
+#         scope           = "Pool"
+#       }
+#     }
 
-    resource_file {
-      storage_container_url     = "https://${azurerm_storage_container.jobfiles.storage_account_name}.blob.core.windows.net/${azurerm_storage_container.jobfiles.name}"
-      user_assigned_identity_id = azurerm_user_assigned_identity.main.id
-    }
-  }
+#     resource_file {
+#       storage_container_url     = "https://${azurerm_storage_container.jobfiles.storage_account_name}.blob.core.windows.net/${azurerm_storage_container.jobfiles.name}"
+#       user_assigned_identity_id = azurerm_user_assigned_identity.main.id
+#     }
+#   }
 
-  # network_configuration {
-  #   subnet_id = azurerm_subnet.main.id
-  # }
+#   # network_configuration {
+#   #   subnet_id = azurerm_subnet.main.id
+#   # }
 
-  lifecycle {
-    ignore_changes = [
-      fixed_scale[0].target_dedicated_nodes
-    ]
-  }
-}
+#   lifecycle {
+#     ignore_changes = [
+#       fixed_scale[0].target_dedicated_nodes
+#     ]
+#   }
+# }
 
-resource "azurerm_batch_job" "dev" {
-  name               = "dev-job"
-  batch_pool_id      = azurerm_batch_pool.dev.id
-  task_retry_maximum = 1
-}
+# resource "azurerm_batch_job" "dev" {
+#   name               = "dev-job"
+#   batch_pool_id      = azurerm_batch_pool.dev.id
+#   task_retry_maximum = 1
+# }
 
 ### Administration Jumpbox ###
 

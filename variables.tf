@@ -13,6 +13,11 @@ variable "batch_vm_size" {
   default = "STANDARD_D2S_V3"
 }
 
+variable "batch_account_public" {
+  type    = bool
+  default = false
+}
+
 
 ### Jumpbox ###
 
