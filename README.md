@@ -2,6 +2,8 @@
 
 > You might need to increase your Batch quotas when first creating accounts and pools
 
+<img src=".docs/batch.png" />
+
 To override TF variables create a `.auto.tfvars` file.
 
 Create the account:
