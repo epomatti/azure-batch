@@ -8,6 +8,14 @@ variable "location" {
   default = "eastus"
 }
 
+variable "batch_vm_size" {
+  type    = string
+  default = "STANDARD_D2S_V3"
+}
+
+
+### Jumpbox ###
+
 variable "jumpbox_size" {
   type    = string
   default = "Standard_DS1_v2"
