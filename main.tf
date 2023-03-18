@@ -105,7 +105,7 @@ resource "azurerm_network_security_rule" "jumpbox_inbound" {
   access                      = "Allow"
   protocol                    = "Tcp"
   source_port_range           = "*"
-  destination_port_range      = "22"
+  destination_port_range      = "*"
   source_address_prefix       = "*"
   destination_address_prefix  = "*"
   resource_group_name         = azurerm_resource_group.main.name
@@ -428,4 +428,52 @@ resource "azurerm_role_assignment" "jumpbox_batch" {
   scope                = azurerm_batch_account.main.id
   role_definition_name = "Contributor"
   principal_id         = azurerm_linux_virtual_machine.main.identity[0].principal_id
+}
+
+### Windows Jump Server ###
+
+resource "azurerm_public_ip" "windows" {
+  name                = "pip-windows-${var.sys}"
+  resource_group_name = azurerm_resource_group.main.name
+  location            = azurerm_resource_group.main.location
+  allocation_method   = "Static"
+}
+
+resource "azurerm_network_interface" "windows" {
+  name                = "nic-windows-${var.sys}"
+  location            = azurerm_resource_group.main.location
+  resource_group_name = azurerm_resource_group.main.name
+
+  ip_configuration {
+    name                          = "windows"
+    subnet_id                     = azurerm_subnet.jumpbox.id
+    private_ip_address_allocation = "Dynamic"
+    public_ip_address_id          = azurerm_public_ip.windows.id
+  }
+
+  lifecycle {
+    create_before_destroy = true
+  }
+}
+
+resource "azurerm_windows_virtual_machine" "windows" {
+  name                  = "win-${var.sys}"
+  resource_group_name   = azurerm_resource_group.main.name
+  location              = azurerm_resource_group.main.location
+  size                  = var.jumpbox_size
+  admin_username        = var.jumpbox_admin_user
+  admin_password        = var.jumpbox_admin_password
+  network_interface_ids = [azurerm_network_interface.windows.id]
+
+  os_disk {
+    caching              = "ReadWrite"
+    storage_account_type = "Standard_LRS"
+  }
+
+  source_image_reference {
+    publisher = "MicrosoftWindowsServer"
+    offer     = "WindowsServer"
+    sku       = "2022-datacenter"
+    version   = "latest"
+  }
 }
