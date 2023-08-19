@@ -8,7 +8,7 @@ resource "azurerm_virtual_network" "main" {
 
 ### Batch Subnet ###
 resource "azurerm_network_security_group" "batch" {
-  name                = "nsg-batch-${var.sys}"
+  name                = "nsg-${var.sys}-batch"
   location            = var.location
   resource_group_name = var.group
 }
@@ -55,7 +55,7 @@ resource "azurerm_subnet_network_security_group_association" "main" {
 
 ### Jumpbox Subnet ###
 resource "azurerm_network_security_group" "jumpbox" {
-  name                = "nsg-jumpbox-${var.sys}"
+  name                = "nsg-${var.sys}-jumpbox"
   location            = var.location
   resource_group_name = var.group
 }
