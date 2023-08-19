@@ -21,3 +21,11 @@ variable "vnet_id" {
 variable "subnet_id" {
   type = string
 }
+
+variable "provision_batchAccount_private_endpoint" {
+  type = bool
+}
+
+variable "provision_nodeManagement_private_endpoint" {
+  type = bool
+}

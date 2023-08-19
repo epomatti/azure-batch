@@ -16,6 +16,7 @@ resource "azurerm_private_dns_zone_virtual_network_link" "batch" {
 
 # Account Endpoint
 resource "azurerm_private_endpoint" "batch_account" {
+  count               = var.provision_batchAccount_private_endpoint ? 1 : 0
   name                = "pe-batchaccount-${var.sys}"
   location            = var.location
   resource_group_name = var.group
@@ -38,6 +39,7 @@ resource "azurerm_private_endpoint" "batch_account" {
 
 # Node Endpoint
 resource "azurerm_private_endpoint" "node_management" {
+  count               = var.provision_nodeManagement_private_endpoint ? 1 : 0
   name                = "pe-nodemanagement-${var.sys}"
   location            = var.location
   resource_group_name = var.group

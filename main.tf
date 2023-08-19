@@ -57,13 +57,15 @@ module "batch_pool" {
 
 module "privatelink" {
   source           = "./modules/privatelink"
-  count            = var.provision_batch_private_endpoints ? 1 : 0
   sys              = var.sys
   location         = azurerm_resource_group.main.location
   group            = azurerm_resource_group.main.name
   batch_account_id = module.batch_account.batch_account_id
   vnet_id          = module.network.vnet_id
   subnet_id        = module.network.batch_subnet_id
+
+  provision_batchAccount_private_endpoint   = var.provision_batchAccount_private_endpoint
+  provision_nodeManagement_private_endpoint = var.provision_nodeManagement_private_endpoint
 }
 
 module "vm_linux" {
@@ -86,4 +88,3 @@ module "vm_win" {
   jumpbox_size   = var.jumpbox_size_win
   jumpbox_subnet = module.network.jumpbox_subnet_id
 }
-

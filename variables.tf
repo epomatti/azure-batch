@@ -25,9 +25,14 @@ variable "provision_batch_pool" {
   default = false
 }
 
-variable "provision_batch_private_endpoints" {
+variable "provision_batchAccount_private_endpoint" {
   type    = bool
   default = false
+}
+
+variable "provision_nodeManagement_private_endpoint" {
+  type    = bool
+  default = true
 }
 
 ### Jumpbox ###
