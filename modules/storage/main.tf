@@ -1,17 +1,17 @@
 ### Storage ###
 
-# This will be used as auto-storage
+# Batch Auto-storage
 resource "azurerm_storage_account" "autostorage" {
-  name                     = "st${var.sys}789"
+  name                     = "st${var.sys}autostg"
   resource_group_name      = var.group
   location                 = var.location
   account_tier             = "Standard"
   account_replication_type = "LRS"
 }
 
-# This will be a resource file from the blob
+# Batch Pool storage
 resource "azurerm_storage_account" "jobfiles" {
-  name                     = "st${var.sys}res111"
+  name                     = "st${var.sys}jobstg"
   resource_group_name      = var.group
   location                 = var.location
   account_tier             = "Standard"

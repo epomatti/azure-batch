@@ -20,8 +20,23 @@ variable "batch_account_public" {
   default = true
 }
 
+variable "provision_batch_pool" {
+  type    = bool
+  default = false
+}
+
 
 ### Jumpbox ###
+variable "provision_linux_vm" {
+  type    = bool
+  default = false
+}
+
+variable "provision_win_vm" {
+  type    = bool
+  default = false
+}
+
 variable "jumpbox_size" {
   type    = string
   default = "Standard_DS1_v2"

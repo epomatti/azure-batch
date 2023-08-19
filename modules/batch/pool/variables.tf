@@ -14,6 +14,10 @@ variable "storage_jobfiles_id" {
   type = string
 }
 
+variable "jobfiles_storage_name" {
+  type = string
+}
+
 variable "batch_account_name" {
   type = string
 }

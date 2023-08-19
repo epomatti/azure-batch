@@ -10,6 +10,10 @@ variable "group" {
   type = string
 }
 
+variable "batch_account_public" {
+  type = bool
+}
+
 variable "autostorage_id" {
   type = string
 }

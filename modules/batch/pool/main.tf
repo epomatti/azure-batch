@@ -61,7 +61,7 @@ resource "azurerm_batch_pool" "dev" {
     }
 
     resource_file {
-      storage_container_url     = "https://${azurerm_storage_container.jobfiles.storage_account_name}.blob.core.windows.net/${azurerm_storage_container.jobfiles.name}"
+      storage_container_url     = "https://${var.jobfiles_storage_name}.blob.core.windows.net/${var.jobfiles_storage_name}"
       user_assigned_identity_id = azurerm_user_assigned_identity.main.id
     }
   }
