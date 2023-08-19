@@ -55,15 +55,16 @@ module "batch_pool" {
   jobfiles_storage_name = module.storage.jobfiles_storage_name
 }
 
-# module "privatelink" {
-#   source           = "./modules/privatelink"
-#   sys              = var.sys
-#   location         = azurerm_resource_group.main.location
-#   group            = azurerm_resource_group.main.name
-#   batch_account_id = module.batch_account.batch_account_id
-#   vnet_id          = module.network.vnet_id
-#   subnet_id        = module.network.batch_subnet_id
-# }
+module "privatelink" {
+  source           = "./modules/privatelink"
+  count            = var.provision_batch_private_links ? 1 : 0
+  sys              = var.sys
+  location         = azurerm_resource_group.main.location
+  group            = azurerm_resource_group.main.name
+  batch_account_id = module.batch_account.batch_account_id
+  vnet_id          = module.network.vnet_id
+  subnet_id        = module.network.batch_subnet_id
+}
 
 module "vm_linux" {
   source                 = "./modules/vm/linux"
@@ -73,7 +74,7 @@ module "vm_linux" {
   group                  = azurerm_resource_group.main.name
   jumpbox_admin_user     = var.jumpbox_admin_user
   jumpbox_admin_password = var.jumpbox_admin_password
-  jumpbox_size           = var.jumpbox_size
+  jumpbox_size           = var.jumpbox_size_linux
   jumpbox_subnet         = module.network.jumpbox_subnet_id
   batch_account_id       = module.batch_account.batch_account_id
 }
@@ -86,7 +87,7 @@ module "vm_win" {
   group                  = azurerm_resource_group.main.name
   jumpbox_admin_user     = var.jumpbox_admin_user
   jumpbox_admin_password = var.jumpbox_admin_password
-  jumpbox_size           = var.jumpbox_size
+  jumpbox_size           = var.jumpbox_size_win
   jumpbox_subnet         = module.network.jumpbox_subnet_id
 }
 

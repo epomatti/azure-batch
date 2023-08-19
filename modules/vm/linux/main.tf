@@ -44,6 +44,7 @@ resource "azurerm_linux_virtual_machine" "main" {
   }
 
   os_disk {
+    name                 = "osdisk-linux-${var.sys}"
     caching              = "ReadOnly"
     storage_account_type = "Standard_LRS"
   }
@@ -52,7 +53,7 @@ resource "azurerm_linux_virtual_machine" "main" {
     publisher = "Canonical"
     offer     = "0001-com-ubuntu-server-jammy"
     sku       = "22_04-lts-gen2"
-    version   = "22.04.202303090"
+    version   = "latest"
   }
 }
 

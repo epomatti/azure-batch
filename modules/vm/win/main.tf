@@ -34,7 +34,8 @@ resource "azurerm_windows_virtual_machine" "windows" {
   network_interface_ids = [azurerm_network_interface.windows.id]
 
   os_disk {
-    caching              = "ReadWrite"
+    name                 = "osdisk-win-${var.sys}"
+    caching              = "ReadOnly"
     storage_account_type = "Standard_LRS"
   }
 

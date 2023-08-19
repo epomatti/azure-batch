@@ -25,6 +25,10 @@ variable "provision_batch_pool" {
   default = false
 }
 
+variable "provision_batch_private_links" {
+  type    = bool
+  default = false
+}
 
 ### Jumpbox ###
 variable "provision_linux_vm" {
@@ -37,9 +41,14 @@ variable "provision_win_vm" {
   default = false
 }
 
-variable "jumpbox_size" {
+variable "jumpbox_size_linux" {
   type    = string
-  default = "Standard_DS1_v2"
+  default = "Standard_B1ls"
+}
+
+variable "jumpbox_size_win" {
+  type    = string
+  default = "Standard_B2s"
 }
 
 variable "jumpbox_admin_user" {
