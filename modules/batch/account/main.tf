@@ -7,12 +7,14 @@ resource "azurerm_batch_account" "main" {
   storage_account_id                  = var.autostorage_id
   storage_account_authentication_mode = "BatchAccountManagedIdentity"
 
-  # Microsoft recommendation (VM will be deprecated)
+  # Provisioning happens behind the scenes
   pool_allocation_mode = "BatchService"
 
   identity {
     type = "SystemAssigned"
   }
+
+  # network_profile {}
 
   # To make life easier during tests
   # lifecycle {

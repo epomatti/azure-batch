@@ -63,15 +63,15 @@ module "batch_pool" {
   jobfiles_storage_name = module.storage.jobfiles_storage_name
 }
 
-module "privatelink" {
-  source           = "./modules/privatelink"
-  sys              = var.sys
-  location         = azurerm_resource_group.main.location
-  group            = azurerm_resource_group.main.name
-  batch_account_id = module.batch_account.batch_account_id
-  vnet_id          = module.network.vnet_id
-  subnet_id        = module.network.batch_subnet_id
-}
+# module "privatelink" {
+#   source           = "./modules/privatelink"
+#   sys              = var.sys
+#   location         = azurerm_resource_group.main.location
+#   group            = azurerm_resource_group.main.name
+#   batch_account_id = module.batch_account.batch_account_id
+#   vnet_id          = module.network.vnet_id
+#   subnet_id        = module.network.batch_subnet_id
+# }
 
 module "vm_linux" {
   source                 = "./modules/vm/linux"
