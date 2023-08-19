@@ -6,7 +6,7 @@ variable "sys" {
 
 variable "location" {
   type    = string
-  default = "brazilsouth"
+  default = "eastus"
 }
 
 ### Batch ###
@@ -49,15 +49,4 @@ variable "jumpbox_size_linux" {
 variable "jumpbox_size_win" {
   type    = string
   default = "Standard_B2s"
-}
-
-variable "jumpbox_admin_user" {
-  type    = string
-  default = "bastionadmin"
-}
-
-variable "jumpbox_admin_password" {
-  type      = string
-  default   = "P@ssw0rd.123"
-  sensitive = true
 }

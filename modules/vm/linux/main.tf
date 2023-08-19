@@ -28,8 +28,8 @@ resource "azurerm_linux_virtual_machine" "main" {
   resource_group_name   = var.group
   location              = var.location
   size                  = var.jumpbox_size
-  admin_username        = var.jumpbox_admin_user
-  admin_password        = var.jumpbox_admin_password
+  admin_username        = "bastionadmin"
+  admin_password        = "P@ssw0rd.123"
   network_interface_ids = [azurerm_network_interface.main.id]
 
   custom_data = filebase64("${path.module}/cloud-init.sh")
@@ -39,7 +39,7 @@ resource "azurerm_linux_virtual_machine" "main" {
   }
 
   admin_ssh_key {
-    username   = var.jumpbox_admin_user
+    username   = "bastionadmin"
     public_key = file("~/.ssh/id_rsa.pub")
   }
 

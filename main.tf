@@ -67,27 +67,23 @@ module "privatelink" {
 }
 
 module "vm_linux" {
-  source                 = "./modules/vm/linux"
-  count                  = var.provision_linux_vm ? 1 : 0
-  sys                    = var.sys
-  location               = azurerm_resource_group.main.location
-  group                  = azurerm_resource_group.main.name
-  jumpbox_admin_user     = var.jumpbox_admin_user
-  jumpbox_admin_password = var.jumpbox_admin_password
-  jumpbox_size           = var.jumpbox_size_linux
-  jumpbox_subnet         = module.network.jumpbox_subnet_id
-  batch_account_id       = module.batch_account.batch_account_id
+  source           = "./modules/vm/linux"
+  count            = var.provision_linux_vm ? 1 : 0
+  sys              = var.sys
+  location         = azurerm_resource_group.main.location
+  group            = azurerm_resource_group.main.name
+  jumpbox_size     = var.jumpbox_size_linux
+  jumpbox_subnet   = module.network.jumpbox_subnet_id
+  batch_account_id = module.batch_account.batch_account_id
 }
 
 module "vm_win" {
-  source                 = "./modules/vm/win"
-  count                  = var.provision_win_vm ? 1 : 0
-  sys                    = var.sys
-  location               = azurerm_resource_group.main.location
-  group                  = azurerm_resource_group.main.name
-  jumpbox_admin_user     = var.jumpbox_admin_user
-  jumpbox_admin_password = var.jumpbox_admin_password
-  jumpbox_size           = var.jumpbox_size_win
-  jumpbox_subnet         = module.network.jumpbox_subnet_id
+  source         = "./modules/vm/win"
+  count          = var.provision_win_vm ? 1 : 0
+  sys            = var.sys
+  location       = azurerm_resource_group.main.location
+  group          = azurerm_resource_group.main.name
+  jumpbox_size   = var.jumpbox_size_win
+  jumpbox_subnet = module.network.jumpbox_subnet_id
 }
 

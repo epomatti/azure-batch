@@ -17,12 +17,3 @@ variable "jumpbox_subnet" {
 variable "jumpbox_size" {
   type = string
 }
-
-variable "jumpbox_admin_user" {
-  type = string
-}
-
-variable "jumpbox_admin_password" {
-  type      = string
-  sensitive = true
-}

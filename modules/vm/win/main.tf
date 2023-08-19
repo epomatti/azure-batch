@@ -29,8 +29,8 @@ resource "azurerm_windows_virtual_machine" "windows" {
   resource_group_name   = var.group
   location              = var.location
   size                  = var.jumpbox_size
-  admin_username        = var.jumpbox_admin_user
-  admin_password        = var.jumpbox_admin_password
+  admin_username        = "bastionadmin"
+  admin_password        = "P@ssw0rd.123"
   network_interface_ids = [azurerm_network_interface.windows.id]
 
   os_disk {
