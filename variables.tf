@@ -1,3 +1,4 @@
+### Workload ###
 variable "sys" {
   type    = string
   default = "fastbrains"
@@ -5,9 +6,10 @@ variable "sys" {
 
 variable "location" {
   type    = string
-  default = "eastus"
+  default = "brazilsouth"
 }
 
+### Batch ###
 variable "batch_vm_size" {
   type    = string
   default = "STANDARD_D2S_V3"
@@ -15,12 +17,11 @@ variable "batch_vm_size" {
 
 variable "batch_account_public" {
   type    = bool
-  default = false
+  default = true
 }
 
 
 ### Jumpbox ###
-
 variable "jumpbox_size" {
   type    = string
   default = "Standard_DS1_v2"

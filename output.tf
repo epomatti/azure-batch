@@ -1,3 +1,3 @@
-output "linux_jumpbox" {
-  value = "ssh ${var.jumpbox_admin_user}@${azurerm_public_ip.main.ip_address}"
+output "linux_ssh_connect" {
+  value = module.vm_linux.ssh_connect
 }

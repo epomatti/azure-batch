@@ -70,7 +70,26 @@ module "batch_pool" {
   storage_jobfiles_id = module.storage.jobfiles_storage_id
 }
 
+module "vm_linux" {
+  source                 = "./modules/vm/linux"
+  sys                    = var.sys
+  location               = azurerm_resource_group.main.location
+  group                  = azurerm_resource_group.main.name
+  jumpbox_admin_user     = var.jumpbox_admin_user
+  jumpbox_admin_password = var.jumpbox_admin_password
+  jumpbox_size           = var.jumpbox_size
+  jumpbox_subnet         = module.network.jumpbox_subnet_id
+  batch_account_id       = module.batch_account.batch_account_id
+}
 
-
-
+module "vm_win" {
+  source                 = "./modules/vm/win"
+  sys                    = var.sys
+  location               = azurerm_resource_group.main.location
+  group                  = azurerm_resource_group.main.name
+  jumpbox_admin_user     = var.jumpbox_admin_user
+  jumpbox_admin_password = var.jumpbox_admin_password
+  jumpbox_size           = var.jumpbox_size
+  jumpbox_subnet         = module.network.jumpbox_subnet_id
+}
 
