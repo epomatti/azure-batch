@@ -25,7 +25,7 @@ variable "provision_batch_pool" {
   default = false
 }
 
-variable "provision_batch_private_links" {
+variable "provision_batch_private_endpoints" {
   type    = bool
   default = false
 }
