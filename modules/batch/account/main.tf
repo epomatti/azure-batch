@@ -7,7 +7,7 @@ resource "azurerm_batch_account" "main" {
   storage_account_id                  = var.autostorage_id
   storage_account_authentication_mode = "BatchAccountManagedIdentity"
 
-  # Provisioning happens behind the scenes
+  # Azure-managed compute
   pool_allocation_mode = "BatchService"
 
   identity {
