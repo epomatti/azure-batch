@@ -29,5 +29,5 @@ resource "azurerm_storage_blob" "molecules_zip" {
   storage_account_name   = azurerm_storage_account.jobfiles.name
   storage_container_name = azurerm_storage_container.jobfiles.name
   type                   = "Block"
-  source                 = "molecules.zip"
+  source                 = "${path.module}/../artifacts/molecules.zip"
 }
