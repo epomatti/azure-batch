@@ -24,7 +24,7 @@ az batch application package create \
   -n bafastbrains \
   -g rg-fastbrains \
   --application-name "molecular-analysis" \
-  --package-file run.zip \
+  --package-file artifacts/run.zip \
   --version-name "1.0"
 
 az batch application set \
@@ -105,6 +105,33 @@ Now it is possible to use the private endpoints:
 
 ```
 az batch pool list
+```
+
+## Quota increase
+
+https://learn.microsoft.com/en-us/rest/api/support/quota-payload#azure-batch
+
+```
+Create a ticket to request Quota increase for Pools for a Batch account.
+        az support tickets create \
+          --contact-country "USA" \
+          --contact-email "abc@contoso.com" \
+          --contact-first-name "Foo" \
+          --contact-language "en-US" \
+          --contact-last-name "Bar" \
+          --contact-method "email" \
+          --contact-timezone "Pacific Standard Time" \
+          --description "QuotaTicketDescription" \
+          --problem-classification "/providers/Microsoft.Support/services/QuotaServiceNameGuid/probl
+        emClassifications/BatchQuotaProblemClassificationNameGuid" \
+          --severity "minimal" \
+          --ticket-name "QuotaTestTicketName" \
+          --title "QuotaTicketTitle" \
+          --quota-change-payload "{\"AccountName\":\"test\", \"NewLimit\":200, \"Type\":\"Pools\"}"
+        \
+          --quota-change-regions "EastUS" \
+          --quota-change-version "1.0" \
+          --quota-change-subtype "Account"
 ```
 
 ## Reference

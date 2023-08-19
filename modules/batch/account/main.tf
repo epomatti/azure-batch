@@ -14,14 +14,14 @@ resource "azurerm_batch_account" "main" {
     type = "SystemAssigned"
   }
 
-  # network_profile {}
-
-  # To make life easier during tests
-  # lifecycle {
-  #   ignore_changes = [
-  #     public_network_access_enabled
-  #   ]
-  # }
+  network_profile {
+    account_access {
+      default_action = "Allow"
+    }
+    node_management_access {
+      default_action = "Allow"
+    }
+  }
 }
 
 resource "azurerm_role_assignment" "batch" {
