@@ -25,6 +25,8 @@ variable "provision_batch_pool" {
   default = false
 }
 
+### Private Endpoints ###
+
 variable "provision_batchAccount_private_endpoint" {
   type    = bool
   default = false
