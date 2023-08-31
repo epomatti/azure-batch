@@ -9,7 +9,7 @@ resource "azurerm_storage_account" "autostorage" {
   account_replication_type = "LRS"
 }
 
-# Batch Pool storage
+# Batch Pool Storage Account
 resource "azurerm_storage_account" "jobfiles" {
   name                     = "st${var.sys}jobstg"
   resource_group_name      = var.group
@@ -18,6 +18,7 @@ resource "azurerm_storage_account" "jobfiles" {
   account_replication_type = "LRS"
 }
 
+# Blob
 resource "azurerm_storage_container" "jobfiles" {
   name                  = "jobfiles"
   storage_account_name  = azurerm_storage_account.jobfiles.name
