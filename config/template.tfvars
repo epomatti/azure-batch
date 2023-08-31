@@ -1,10 +1,11 @@
-# Batch
+# Batch Account
 batch_account_public = true
 
-# Pool
+# Batch Pool
 provision_batch_pool = false
 
-# Private End
+# Private Link
+provision_private_link                    = false
 provision_batchAccount_private_endpoint   = false
 provision_nodeManagement_private_endpoint = false
 
