@@ -57,6 +57,7 @@ module "batch_pool" {
 
 module "privatelink" {
   source           = "./modules/privatelink"
+  count            = var.provision_private_link == true ? 1 : 0
   sys              = var.sys
   location         = azurerm_resource_group.main.location
   group            = azurerm_resource_group.main.name
