@@ -25,8 +25,18 @@ variable "provision_batch_pool" {
   default = false
 }
 
-### Private Endpoints ###
+### Network ###
+variable "network_account_access" {
+  type    = string
+  default = "Allow"
+}
 
+variable "network_node_management_access" {
+  type    = string
+  default = "Allow"
+}
+
+### Private Endpoints ###
 variable "provision_private_link" {
   type    = bool
   default = false

@@ -16,10 +16,10 @@ resource "azurerm_batch_account" "main" {
 
   network_profile {
     account_access {
-      default_action = "Allow"
+      default_action = var.network_account_access
     }
     node_management_access {
-      default_action = "Allow"
+      default_action = var.network_node_management_access
     }
   }
 }

@@ -40,6 +40,9 @@ module "batch_account" {
   group                = azurerm_resource_group.main.name
   batch_account_public = var.batch_account_public
   autostorage_id       = module.storage.autostorage_id
+
+  network_account_access         = var.network_account_access
+  network_node_management_access = var.network_account_access
 }
 
 module "batch_pool" {

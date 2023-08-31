@@ -17,3 +17,11 @@ variable "batch_account_public" {
 variable "autostorage_id" {
   type = string
 }
+
+variable "network_account_access" {
+  type = string
+}
+
+variable "network_node_management_access" {
+  type = string
+}

@@ -4,7 +4,11 @@
 
 <img src=".docs/batch.png" />
 
-To override TF variables create a `.auto.tfvars` file.
+To override TF variables create the `.auto.tfvars` file:
+
+```sh
+cp config/template.tfvars .auto.tfvars
+```
 
 Create the account:
 

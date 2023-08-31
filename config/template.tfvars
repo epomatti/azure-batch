@@ -1,6 +1,10 @@
 # Batch Account
 batch_account_public = true
 
+# Network
+network_account_access         = "Allow"
+network_node_management_access = "Allow"
+
 # Batch Pool
 provision_batch_pool = false
 
