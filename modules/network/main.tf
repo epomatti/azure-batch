@@ -6,7 +6,22 @@ resource "azurerm_virtual_network" "main" {
   resource_group_name = var.group
 }
 
-### Batch Subnet ###
+### Subnets ###
+resource "azurerm_subnet" "main" {
+  name                 = "batch-subnet"
+  resource_group_name  = var.group
+  virtual_network_name = azurerm_virtual_network.main.name
+  address_prefixes     = ["10.0.1.0/24"]
+}
+
+resource "azurerm_subnet" "jumpbox" {
+  name                 = "jumpbox-subnet"
+  resource_group_name  = var.group
+  virtual_network_name = azurerm_virtual_network.main.name
+  address_prefixes     = ["10.0.2.0/24"]
+}
+
+### Network Security Groups ###
 resource "azurerm_network_security_group" "batch" {
   name                = "nsg-${var.sys}-batch"
   location            = var.location
@@ -41,19 +56,6 @@ resource "azurerm_network_security_rule" "batch_outbound" {
   network_security_group_name = azurerm_network_security_group.batch.name
 }
 
-resource "azurerm_subnet" "main" {
-  name                 = "batch-subnet"
-  resource_group_name  = var.group
-  virtual_network_name = azurerm_virtual_network.main.name
-  address_prefixes     = ["10.0.1.0/24"]
-}
-
-resource "azurerm_subnet_network_security_group_association" "main" {
-  subnet_id                 = azurerm_subnet.main.id
-  network_security_group_id = azurerm_network_security_group.batch.id
-}
-
-### Jumpbox Subnet ###
 resource "azurerm_network_security_group" "jumpbox" {
   name                = "nsg-${var.sys}-jumpbox"
   location            = var.location
@@ -88,11 +90,9 @@ resource "azurerm_network_security_rule" "jumpbox_outbound" {
   network_security_group_name = azurerm_network_security_group.jumpbox.name
 }
 
-resource "azurerm_subnet" "jumpbox" {
-  name                 = "jumpbox-subnet"
-  resource_group_name  = var.group
-  virtual_network_name = azurerm_virtual_network.main.name
-  address_prefixes     = ["10.0.2.0/24"]
+resource "azurerm_subnet_network_security_group_association" "main" {
+  subnet_id                 = azurerm_subnet.main.id
+  network_security_group_id = azurerm_network_security_group.batch.id
 }
 
 resource "azurerm_subnet_network_security_group_association" "jumpbox" {

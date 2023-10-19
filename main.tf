@@ -1,15 +1,8 @@
 terraform {
   required_providers {
     azurerm = {
-      source = "hashicorp/azurerm"
-    }
-  }
-}
-
-provider "azurerm" {
-  features {
-    resource_group {
-      prevent_deletion_if_contains_resources = false
+      source  = "hashicorp/azurerm"
+      version = "3.76.0"
     }
   }
 }
@@ -59,8 +52,8 @@ module "batch_pool" {
 }
 
 module "privatelink" {
-  source           = "./modules/privatelink"
   count            = var.provision_private_link == true ? 1 : 0
+  source           = "./modules/privatelink"
   sys              = var.sys
   location         = azurerm_resource_group.main.location
   group            = azurerm_resource_group.main.name
