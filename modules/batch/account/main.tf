@@ -14,6 +14,7 @@ resource "azurerm_batch_account" "main" {
     type = "SystemAssigned"
   }
 
+  # Allow or block public IPs
   network_profile {
     account_access {
       default_action = var.network_account_access

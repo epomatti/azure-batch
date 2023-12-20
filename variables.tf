@@ -6,7 +6,7 @@ variable "sys" {
 
 variable "location" {
   type    = string
-  default = "eastus"
+  default = "eastus2"
 }
 
 ### Batch ###
@@ -65,7 +65,7 @@ variable "provision_win_vm" {
 
 variable "jumpbox_size_linux" {
   type    = string
-  default = "Standard_B1ls"
+  default = "Standard_B2pts_v2"
 }
 
 variable "jumpbox_size_win" {
