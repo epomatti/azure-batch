@@ -1,18 +1,16 @@
-# Batch Account
-batch_account_public = true
-
-# Network
+# Network access
+batch_account_public           = true
 network_account_access         = "Allow"
 network_node_management_access = "Allow"
-
-# Batch Pool
-provision_batch_pool = false
-batch_vm_size        = "STANDARD_D2S_V3" # "Standard_D2ads_v5"
 
 # Private Link
 provision_private_link                    = false
 provision_batchAccount_private_endpoint   = false
 provision_nodeManagement_private_endpoint = false
+
+# Batch Pool
+provision_batch_pool = false
+batch_vm_size        = "STANDARD_D2S_V3" # "Standard_D2ads_v5"
 
 # Virtual Machines
 provision_linux_vm = false
