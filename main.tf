@@ -71,7 +71,7 @@ module "vm_linux" {
   sys              = var.sys
   location         = azurerm_resource_group.main.location
   group            = azurerm_resource_group.main.name
-  jumpbox_size     = var.jumpbox_size_linux
+  jumpbox_size     = var.jumpbox_linux_vm_size
   jumpbox_subnet   = module.network.jumpbox_subnet_id
   batch_account_id = module.batch_account.batch_account_id
 }
@@ -82,6 +82,6 @@ module "vm_win" {
   sys            = var.sys
   location       = azurerm_resource_group.main.location
   group          = azurerm_resource_group.main.name
-  jumpbox_size   = var.jumpbox_size_win
+  jumpbox_size   = var.jumpbox_win_vm_size
   jumpbox_subnet = module.network.jumpbox_subnet_id
 }

@@ -63,12 +63,10 @@ variable "provision_win_vm" {
   default = false
 }
 
-variable "jumpbox_size_linux" {
-  type    = string
-  default = "Standard_B2pts_v2"
+variable "jumpbox_linux_vm_size" {
+  type = string
 }
 
-variable "jumpbox_size_win" {
-  type    = string
-  default = "Standard_B2s"
+variable "jumpbox_win_vm_size" {
+  type = string
 }
