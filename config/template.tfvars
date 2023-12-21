@@ -12,7 +12,7 @@ provision_nodeManagement_private_endpoint = false
 provision_batch_pool = false
 batch_vm_size        = "STANDARD_D2S_V3" # "Standard_D2ads_v5"
 
-# Virtual Machines
+# Virtual Machines (Jumpbox)
 provision_linux_vm = false
 provision_win_vm   = false
 
