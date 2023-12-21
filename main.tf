@@ -26,6 +26,13 @@ module "storage" {
   group    = azurerm_resource_group.main.name
 }
 
+module "monitor" {
+  source   = "./modules/monitor"
+  sys      = var.sys
+  location = azurerm_resource_group.main.location
+  group    = azurerm_resource_group.main.name
+}
+
 module "batch_account" {
   source               = "./modules/batch/account"
   sys                  = var.sys
