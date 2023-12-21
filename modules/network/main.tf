@@ -28,33 +28,33 @@ resource "azurerm_network_security_group" "batch" {
   resource_group_name = var.group
 }
 
-resource "azurerm_network_security_rule" "batch_inbound" {
-  name                        = "batch-inbound"
-  priority                    = 100
-  direction                   = "Inbound"
-  access                      = "Allow"
-  protocol                    = "*"
-  source_port_range           = "*"
-  destination_port_range      = "*"
-  source_address_prefix       = "*"
-  destination_address_prefix  = "*"
-  resource_group_name         = var.group
-  network_security_group_name = azurerm_network_security_group.batch.name
-}
+# resource "azurerm_network_security_rule" "batch_inbound" {
+#   name                        = "batch-inbound"
+#   priority                    = 100
+#   direction                   = "Inbound"
+#   access                      = "Allow"
+#   protocol                    = "*"
+#   source_port_range           = "*"
+#   destination_port_range      = "*"
+#   source_address_prefix       = "*"
+#   destination_address_prefix  = "*"
+#   resource_group_name         = var.group
+#   network_security_group_name = azurerm_network_security_group.batch.name
+# }
 
-resource "azurerm_network_security_rule" "batch_outbound" {
-  name                        = "batch-outbound"
-  priority                    = 100
-  direction                   = "Outbound"
-  access                      = "Allow"
-  protocol                    = "*"
-  source_port_range           = "*"
-  destination_port_range      = "*"
-  source_address_prefix       = "*"
-  destination_address_prefix  = "*"
-  resource_group_name         = var.group
-  network_security_group_name = azurerm_network_security_group.batch.name
-}
+# resource "azurerm_network_security_rule" "batch_outbound" {
+#   name                        = "batch-outbound"
+#   priority                    = 100
+#   direction                   = "Outbound"
+#   access                      = "Allow"
+#   protocol                    = "*"
+#   source_port_range           = "*"
+#   destination_port_range      = "*"
+#   source_address_prefix       = "*"
+#   destination_address_prefix  = "*"
+#   resource_group_name         = var.group
+#   network_security_group_name = azurerm_network_security_group.batch.name
+# }
 
 resource "azurerm_network_security_group" "jumpbox" {
   name                = "nsg-${var.sys}-jumpbox"
@@ -62,33 +62,47 @@ resource "azurerm_network_security_group" "jumpbox" {
   resource_group_name = var.group
 }
 
-resource "azurerm_network_security_rule" "jumpbox_inbound" {
-  name                        = "jumpbox-inbound"
+resource "azurerm_network_security_rule" "jumpbox_ssh" {
+  name                        = "AllowSSH"
   priority                    = 100
   direction                   = "Inbound"
   access                      = "Allow"
   protocol                    = "Tcp"
   source_port_range           = "*"
-  destination_port_range      = "*"
+  destination_port_range      = "22"
   source_address_prefix       = "*"
   destination_address_prefix  = "*"
   resource_group_name         = var.group
   network_security_group_name = azurerm_network_security_group.jumpbox.name
 }
 
-resource "azurerm_network_security_rule" "jumpbox_outbound" {
-  name                        = "jumpbox-outbound"
-  priority                    = 100
-  direction                   = "Outbound"
+resource "azurerm_network_security_rule" "jumpbox_rdp" {
+  name                        = "AllowSSH"
+  priority                    = 110
+  direction                   = "Inbound"
   access                      = "Allow"
   protocol                    = "Tcp"
   source_port_range           = "*"
-  destination_port_range      = "*"
+  destination_port_range      = "3389"
   source_address_prefix       = "*"
   destination_address_prefix  = "*"
   resource_group_name         = var.group
   network_security_group_name = azurerm_network_security_group.jumpbox.name
 }
+
+# resource "azurerm_network_security_rule" "jumpbox_outbound" {
+#   name                        = "jumpbox-outbound"
+#   priority                    = 100
+#   direction                   = "Outbound"
+#   access                      = "Allow"
+#   protocol                    = "Tcp"
+#   source_port_range           = "*"
+#   destination_port_range      = "*"
+#   source_address_prefix       = "*"
+#   destination_address_prefix  = "*"
+#   resource_group_name         = var.group
+#   network_security_group_name = azurerm_network_security_group.jumpbox.name
+# }
 
 resource "azurerm_subnet_network_security_group_association" "main" {
   subnet_id                 = azurerm_subnet.main.id
