@@ -2,6 +2,7 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
+      # TODO: Upgrade when 3.86 issue is fixed
       version = "3.85.0"
     }
   }
