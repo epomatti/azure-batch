@@ -20,6 +20,8 @@ resource "azurerm_batch_pool" "dev" {
   node_agent_sku_id   = "batch.node.ubuntu 22.04"
   max_tasks_per_node  = 1
 
+  target_node_communication_mode = "Simplified"
+
   identity {
     type         = "UserAssigned"
     identity_ids = [azurerm_user_assigned_identity.main.id]
@@ -67,7 +69,8 @@ resource "azurerm_batch_pool" "dev" {
   }
 
   network_configuration {
-    subnet_id = var.batch_subnet_id
+    subnet_id                        = var.batch_subnet_id
+    public_address_provisioning_type = "NoPublicIPAddresses"
   }
 
   lifecycle {
