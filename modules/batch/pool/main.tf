@@ -70,7 +70,7 @@ resource "azurerm_batch_pool" "dev" {
 
   network_configuration {
     subnet_id                        = var.batch_subnet_id
-    public_address_provisioning_type = "NoPublicIPAddresses"
+    public_address_provisioning_type = var.public_address_provisioning_type
   }
 
   lifecycle {

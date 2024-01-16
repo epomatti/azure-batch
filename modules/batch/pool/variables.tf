@@ -29,3 +29,7 @@ variable "batch_vm_size" {
 variable "batch_subnet_id" {
   type = string
 }
+
+variable "public_address_provisioning_type" {
+  type = string
+}

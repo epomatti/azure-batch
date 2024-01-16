@@ -9,8 +9,9 @@ provision_batchAccount_private_endpoint   = false
 provision_nodeManagement_private_endpoint = false
 
 # Batch Pool
-provision_batch_pool = false
-batch_vm_size        = "STANDARD_D2S_V3" # "Standard_D2ads_v5"
+provision_batch_pool             = false
+batch_vm_size                    = "STANDARD_D2S_V3" # Standard_D2ads_v5
+public_address_provisioning_type = "BatchManaged"    # NoPublicIPAddresses
 
 # Virtual Machines (Jumpbox)
 provision_linux_vm = false

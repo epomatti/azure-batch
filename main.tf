@@ -1,7 +1,7 @@
 terraform {
   required_providers {
     azurerm = {
-      source  = "hashicorp/azurerm"
+      source = "hashicorp/azurerm"
       # TODO: Upgrade when 3.86 issue is fixed
       version = "3.85.0"
     }
@@ -47,16 +47,17 @@ module "batch_account" {
 }
 
 module "batch_pool" {
-  source                = "./modules/batch/pool"
-  count                 = var.provision_batch_pool ? 1 : 0
-  sys                   = var.sys
-  location              = azurerm_resource_group.main.location
-  group                 = azurerm_resource_group.main.name
-  batch_account_name    = module.batch_account.batch_account_name
-  batch_subnet_id       = module.network.batch_subnet_id
-  batch_vm_size         = var.batch_vm_size
-  storage_jobfiles_id   = module.storage.jobfiles_storage_id
-  jobfiles_storage_name = module.storage.jobfiles_storage_name
+  source                           = "./modules/batch/pool"
+  count                            = var.provision_batch_pool ? 1 : 0
+  sys                              = var.sys
+  location                         = azurerm_resource_group.main.location
+  group                            = azurerm_resource_group.main.name
+  batch_account_name               = module.batch_account.batch_account_name
+  batch_subnet_id                  = module.network.batch_subnet_id
+  batch_vm_size                    = var.batch_vm_size
+  storage_jobfiles_id              = module.storage.jobfiles_storage_id
+  jobfiles_storage_name            = module.storage.jobfiles_storage_name
+  public_address_provisioning_type = var.public_address_provisioning_type
 }
 
 module "privatelink" {

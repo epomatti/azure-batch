@@ -25,6 +25,10 @@ variable "provision_batch_pool" {
   default = false
 }
 
+variable "public_address_provisioning_type" {
+  type = string
+}
+
 ### Network ###
 variable "network_account_access" {
   type    = string
