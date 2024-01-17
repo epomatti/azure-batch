@@ -29,6 +29,10 @@ variable "public_address_provisioning_type" {
   type = string
 }
 
+# variable "" {
+  
+# }
+
 ### Network ###
 variable "network_account_access" {
   type    = string

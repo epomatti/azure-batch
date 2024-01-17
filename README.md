@@ -24,6 +24,8 @@ Optionally, Configure your Batch account logs to be sent to the Log Analytics Wo
 Use the script to create the application package:
 
 ```sh
+cd scripts
+
 bash scripts/create-batch-application.sh
 ```
 
@@ -44,6 +46,7 @@ az batch account login \
   --resource-group rg-fastbrains \
   --shared-key-auth
 ```
+
 Alternatively, if you need to use the keys, add `--shared-key-auth`.
 
 Run a task:
@@ -71,7 +74,7 @@ az batch task file list \
 
 It is possible to create a task with the [`--json-file`][1] option:
 
-> The file containing the task(s) to create in JSON(formatted to match REST API request body). When submitting multiple tasks, accepts either an array of tasks or a TaskAddCollectionParamater. If this parameter is specified, all other parameters are ignored.
+> The file containing the task(s) to create in JSON(formatted to match REST API request body). When submitting multiple tasks, accepts either an array of tasks or a TaskAddCollectionParameter. If this parameter is specified, all other parameters are ignored.
 
 Additional functionality for the CLI is available through extensions:
 
@@ -79,14 +82,14 @@ Additional functionality for the CLI is available through extensions:
 az extension add --name azure-batch-cli-extensions
 ```
 
-The Jumpbox already has System-Assigned Identity. To use it:
+The jump box already has System-Assigned Identity. To use it:
 
 ```sh
 # Using the System-Assigned identity within the VM
 az login --identity
 ```
 
-This is not required if you use `az batch account login`, but another option to interact with a private endpoint Batch/pools using the Jumpbox:
+This is not required if you use `az batch account login`, but another option to interact with a private endpoint Batch/pools using the jump box:
 
 ```sh
 export AZURE_BATCH_ACCOUNT=""

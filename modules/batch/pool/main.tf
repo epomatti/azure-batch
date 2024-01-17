@@ -80,8 +80,8 @@ resource "azurerm_batch_pool" "dev" {
   }
 }
 
-# resource "azurerm_batch_job" "dev" {
-#   name               = "dev-job"
-#   batch_pool_id      = azurerm_batch_pool.dev.id
-#   task_retry_maximum = 1
-# }
+resource "azurerm_batch_job" "dev" {
+  name               = "dev-job"
+  batch_pool_id      = azurerm_batch_pool.dev.id
+  task_retry_maximum = 1
+}
