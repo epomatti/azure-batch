@@ -20,22 +20,26 @@ module "network" {
   group    = azurerm_resource_group.main.name
 }
 
+module "keyvault" {
+  source   = "./modules/keyvault"
+  sys      = var.sys
+  location = azurerm_resource_group.main.location
+  group    = azurerm_resource_group.main.name
+}
+
 module "storage" {
   source   = "./modules/storage"
   sys      = var.sys
   location = azurerm_resource_group.main.location
   group    = azurerm_resource_group.main.name
+
+  keyvault_id                 = module.keyvault.id
+  keyvault_autostorage_key_id = module.keyvault.autostorage_key_id
+  keyvault_jobfiles_key_id    = module.keyvault.storagefiles_key_id
 }
 
 module "monitor" {
   source   = "./modules/monitor"
-  sys      = var.sys
-  location = azurerm_resource_group.main.location
-  group    = azurerm_resource_group.main.name
-}
-
-module "keyvault" {
-  source   = "./modules/keyvault"
   sys      = var.sys
   location = azurerm_resource_group.main.location
   group    = azurerm_resource_group.main.name

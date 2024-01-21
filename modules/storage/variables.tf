@@ -9,3 +9,15 @@ variable "location" {
 variable "group" {
   type = string
 }
+
+variable "keyvault_autostorage_key_id" {
+  type = string
+}
+
+variable "keyvault_jobfiles_key_id" {
+  type = string
+}
+
+variable "keyvault_id" {
+  type = string
+}

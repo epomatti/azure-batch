@@ -52,3 +52,55 @@ resource "azurerm_key_vault_key" "batch" {
 
   depends_on = [azurerm_role_assignment.current]
 }
+
+resource "azurerm_key_vault_key" "autostorage" {
+  name         = "autostorage-cmk-key"
+  key_vault_id = azurerm_key_vault.default.id
+  key_type     = "RSA"
+  key_size     = 2048
+
+  key_opts = [
+    "decrypt",
+    "encrypt",
+    "sign",
+    "unwrapKey",
+    "verify",
+    "wrapKey",
+  ]
+
+  rotation_policy {
+    automatic {
+      time_before_expiry = "P30D"
+    }
+    notify_before_expiry = "P29D"
+    expire_after         = "P90D"
+  }
+
+  depends_on = [azurerm_role_assignment.current]
+}
+
+resource "azurerm_key_vault_key" "storage_files" {
+  name         = "storagefiles-cmk-key"
+  key_vault_id = azurerm_key_vault.default.id
+  key_type     = "RSA"
+  key_size     = 2048
+
+  key_opts = [
+    "decrypt",
+    "encrypt",
+    "sign",
+    "unwrapKey",
+    "verify",
+    "wrapKey",
+  ]
+
+  rotation_policy {
+    automatic {
+      time_before_expiry = "P30D"
+    }
+    notify_before_expiry = "P29D"
+    expire_after         = "P90D"
+  }
+
+  depends_on = [azurerm_role_assignment.current]
+}
