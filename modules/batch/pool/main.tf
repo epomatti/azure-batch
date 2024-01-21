@@ -11,6 +11,12 @@ resource "azurerm_role_assignment" "jobfiles" {
   principal_id         = azurerm_user_assigned_identity.main.principal_id
 }
 
+resource "azurerm_role_assignment" "share" {
+  scope                = var.storage_jobfiles_id
+  role_definition_name = "Storage File Data SMB Share Elevated Contributor"
+  principal_id         = azurerm_user_assigned_identity.main.principal_id
+}
+
 resource "azurerm_batch_pool" "dev" {
   name                = "dev"
   resource_group_name = var.group
@@ -64,6 +70,25 @@ resource "azurerm_batch_pool" "dev" {
     target_low_priority_nodes = 0
   }
 
+  # TODO: https://learn.microsoft.com/en-us/azure/batch/virtual-file-mount?tabs=linux
+  mount {
+    azure_blob_file_system {
+      account_name        = var.jobfiles_storage_name
+      container_name      = "blobs"
+      relative_mount_path = "blobs"
+      account_key         = var.jobfiles_storage_account_key
+    }
+  }
+
+  mount {
+    azure_file_share {
+      account_name        = var.jobfiles_storage_name
+      azure_file_url      = "https://${var.jobfiles_storage_name}.file.core.windows.net/share"
+      relative_mount_path = "share"
+      account_key         = var.jobfiles_storage_account_key
+    }
+  }
+
   start_task {
     command_line       = "echo test"
     wait_for_success   = false
@@ -93,13 +118,22 @@ resource "azurerm_batch_pool" "dev" {
     accelerated_networking_enabled = false
   }
 
-  # TODO: https://learn.microsoft.com/en-us/azure/batch/virtual-file-mount?tabs=linux
+  user_accounts {
+    elevation_level = "Admin"
+    name            = "batch"
+    password        = "batch"
+  }
 
   lifecycle {
     ignore_changes = [
       fixed_scale[0].target_dedicated_nodes
     ]
   }
+
+  depends_on = [
+    azurerm_role_assignment.jobfiles,
+    azurerm_role_assignment.share
+  ]
 }
 
 resource "azurerm_batch_job" "dev" {

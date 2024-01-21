@@ -33,3 +33,8 @@ variable "batch_subnet_id" {
 variable "public_address_provisioning_type" {
   type = string
 }
+
+variable "jobfiles_storage_account_key" {
+  type      = string
+  sensitive = true
+}

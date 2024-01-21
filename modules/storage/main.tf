@@ -73,3 +73,15 @@ resource "azurerm_storage_blob" "molecules_zip" {
   type                   = "Block"
   source                 = "${path.module}/../../artifacts/molecules.zip"
 }
+
+resource "azurerm_storage_container" "blobs" {
+  name                  = "blobs"
+  storage_account_name  = azurerm_storage_account.jobfiles.name
+  container_access_type = "private"
+}
+
+resource "azurerm_storage_share" "share" {
+  name                 = "share"
+  storage_account_name = azurerm_storage_account.jobfiles.name
+  quota                = 50
+}
