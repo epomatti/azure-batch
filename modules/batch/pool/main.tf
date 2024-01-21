@@ -34,6 +34,8 @@ resource "azurerm_batch_pool" "dev" {
     version   = "LATEST"
   }
 
+  # TODO: Study this
+  # https://learn.microsoft.com/en-us/azure/batch/disk-encryption
   disk_encryption {
     disk_encryption_target = "OsDisk"
   }
