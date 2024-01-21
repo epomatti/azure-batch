@@ -6,14 +6,14 @@ network_node_management_access = "Deny"
 batch_allow_ip = "123.123.123.123"
 
 # Private Link
-provision_private_link                    = true
-provision_batchAccount_private_endpoint   = true
-provision_nodeManagement_private_endpoint = true
+provision_private_link                    = false
+provision_batchAccount_private_endpoint   = false
+provision_nodeManagement_private_endpoint = false
 
 # Batch Pool
-provision_batch_pool             = true
+provision_batch_pool             = false
 batch_vm_size                    = "Standard_D2ads_v5" # STANDARD_D2S_V3
-public_address_provisioning_type = "BatchManaged" # NoPublicIPAddresses
+public_address_provisioning_type = "BatchManaged"      # NoPublicIPAddresses
 
 # Virtual Machines (Jumpbox)
 provision_linux_vm = false
