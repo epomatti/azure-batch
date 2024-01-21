@@ -25,3 +25,11 @@ variable "network_account_access" {
 variable "network_node_management_access" {
   type = string
 }
+
+variable "keyvault_id" {
+  type = string
+}
+
+variable "cmk_versionless_id" {
+  type = string
+}
