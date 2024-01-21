@@ -34,9 +34,22 @@ resource "azurerm_batch_pool" "dev" {
     version   = "LATEST"
   }
 
+  disk_encryption {
+    disk_encryption_target = "TemporaryDisk"
+  }
+
+  # According to the documentation, this should not work for Linux.. let's see
+  disk_encryption {
+    disk_encryption_target = "OsDisk"
+  }
+
+  # https://learn.microsoft.com/en-us/azure/virtual-machines/ephemeral-os-disks
+  # "Ephemeral OS disks are free, you incur no storage cost for OS disks."
+  os_disk_placement = "CacheDisk"
+
   data_disks {
     lun                  = 0
-    caching              = "None"
+    caching              = "ReadOnly"
     disk_size_gb         = 10
     storage_account_type = "Premium_LRS"
   }
