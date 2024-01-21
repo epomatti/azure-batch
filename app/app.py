@@ -10,7 +10,7 @@ load_dotenv()
 appi_key = os.environ['APPLICATION_INSIGHTS_CONNECTION_STRING']
 
 configure_azure_monitor(
-    connection_string=appi_key,
+    connection_string=appi_key
 )
 
 tracer = trace.get_tracer(__name__)

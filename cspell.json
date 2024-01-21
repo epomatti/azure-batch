@@ -8,7 +8,9 @@
         "bafastbrains",
         "fastbrains",
         "fsmounts",
+        "helloworld",
         "opentelemetry",
+        "OTEL",
         "venv"
     ],
     "ignoreWords": [],

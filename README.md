@@ -119,6 +119,13 @@ For the mounted storage, on [Ubuntu batch][3] the path is `/mnt/batch/tasks/fsmo
 
 Detailed usage of the `applicationinsights` package can be found in the [full documentation][5]. For details on Azure Monitor custom metrics, [link][6] for the guidelines.
 
+Configuration of the instruction can be done via `opentelemetry` available [variables][7]:
+
+```sh
+OTEL_RESOURCE_ATTRIBUTES="service.namespace=<namespace>,service.instance.id=<instance>"
+OTEL_SERVICE_NAME="<service>"
+```
+
 From the renewed [official docs][4]:
 
 ```sh
@@ -148,3 +155,4 @@ which python
 [4]: https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-environments/
 [5]: https://shipit.dev/python-appinsights/
 [6]: https://learn.microsoft.com/en-us/azure/azure-monitor/essentials/metrics-custom-overview
+[7]: https://learn.microsoft.com/en-us/azure/azure-monitor/app/opentelemetry-configuration?tabs=python
