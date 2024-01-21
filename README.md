@@ -2,7 +2,7 @@
 
 > You might have to submit a support to increase Batch quotas
 
-<img src=".docs/batch.png" />
+<img src=".docs/azure-batch.png" />
 
 Copy the `.auto.tfvars` file template:
 
