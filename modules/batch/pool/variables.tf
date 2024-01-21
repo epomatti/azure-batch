@@ -38,3 +38,7 @@ variable "jobfiles_storage_account_key" {
   type      = string
   sensitive = true
 }
+
+variable "share_url" {
+  type = string
+}

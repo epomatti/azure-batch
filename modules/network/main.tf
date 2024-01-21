@@ -21,13 +21,34 @@ resource "azurerm_subnet" "jumpbox" {
   address_prefixes     = ["10.0.2.0/24"]
 }
 
-### Network Security Groups ###
+### Batch NSG Rules ###
 resource "azurerm_network_security_group" "batch" {
   name                = "nsg-${var.sys}-batch"
   location            = var.location
   resource_group_name = var.group
 }
 
+resource "azurerm_network_security_rule" "batch_ssh" {
+  name                        = "AllowSSH"
+  priority                    = 100
+  direction                   = "Inbound"
+  access                      = "Allow"
+  protocol                    = "Tcp"
+  source_port_range           = "*"
+  destination_port_range      = "22"
+  source_address_prefix       = "*"
+  destination_address_prefix  = "*"
+  resource_group_name         = var.group
+  network_security_group_name = azurerm_network_security_group.batch.name
+}
+
+resource "azurerm_subnet_network_security_group_association" "batch" {
+  subnet_id                 = azurerm_subnet.main.id
+  network_security_group_id = azurerm_network_security_group.batch.id
+}
+
+
+### Jumpbox NSG Rules ###
 resource "azurerm_network_security_group" "jumpbox" {
   name                = "nsg-${var.sys}-jumpbox"
   location            = var.location
@@ -60,11 +81,6 @@ resource "azurerm_network_security_rule" "jumpbox_rdp" {
   destination_address_prefix  = "*"
   resource_group_name         = var.group
   network_security_group_name = azurerm_network_security_group.jumpbox.name
-}
-
-resource "azurerm_subnet_network_security_group_association" "main" {
-  subnet_id                 = azurerm_subnet.main.id
-  network_security_group_id = azurerm_network_security_group.batch.id
 }
 
 resource "azurerm_subnet_network_security_group_association" "jumpbox" {

@@ -73,6 +73,7 @@ module "batch_pool" {
   jobfiles_storage_name            = module.storage.jobfiles_storage_name
   public_address_provisioning_type = var.public_address_provisioning_type
   jobfiles_storage_account_key     = module.storage.account_key
+  share_url                        = module.storage.share_url
 }
 
 module "privatelink" {

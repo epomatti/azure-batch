@@ -80,14 +80,14 @@ resource "azurerm_batch_pool" "dev" {
     }
   }
 
-  mount {
-    azure_file_share {
-      account_name        = var.jobfiles_storage_name
-      azure_file_url      = "https://${var.jobfiles_storage_name}.file.core.windows.net/share"
-      relative_mount_path = "share"
-      account_key         = var.jobfiles_storage_account_key
-    }
-  }
+  # mount {
+  #   azure_file_share {
+  #     account_name        = var.jobfiles_storage_name
+  #     azure_file_url      = var.share_url
+  #     relative_mount_path = "fileshare"
+  #     account_key         = var.jobfiles_storage_account_key
+  #   }
+  # }
 
   start_task {
     command_line       = "echo test"

@@ -14,3 +14,7 @@ output "account_key" {
   value     = azurerm_storage_account.jobfiles.primary_access_key
   sensitive = true
 }
+
+output "share_url" {
+  value = azurerm_storage_share.share.url
+}
