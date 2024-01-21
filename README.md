@@ -99,9 +99,22 @@ export AZURE_BATCH_ACCESS_KEY=""
 
 Now it is possible to use the private endpoints:
 
-```
+```sh
 az batch pool list
 ```
+
+## Connect to nodes
+
+Use the node IP and frontend port:
+
+```sh
+ssh batch@<ip> -p 50000
+```
+
+Batch files are located in the [temporary storage][2].
+
+For the mounted storage, on [Ubuntu batch][3] the path is `/mnt/batch/tasks/fsmounts/blobs`.
+
 
 ## Reference
 
@@ -109,3 +122,5 @@ az batch pool list
 - [Private Endpoints + VM](https://learn.microsoft.com/en-us/troubleshoot/azure/general/azure-batch-pool-creation-failure#cause-1-public-network-access-is-disabled-but-batch-account-doesnt-have-private-endpoint)
 
 [1]: https://learn.microsoft.com/en-us/cli/azure/batch/task?view=azure-cli-latest#az-batch-task-create
+[2]: https://learn.microsoft.com/en-us/azure/batch/files-and-directories
+[3]: https://learn.microsoft.com/en-us/azure/batch/virtual-file-mount?tabs=linux
