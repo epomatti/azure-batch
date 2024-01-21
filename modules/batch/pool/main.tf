@@ -91,6 +91,8 @@ resource "azurerm_batch_pool" "dev" {
     accelerated_networking_enabled = false
   }
 
+  # TODO: https://learn.microsoft.com/en-us/azure/batch/virtual-file-mount?tabs=linux
+
   lifecycle {
     ignore_changes = [
       fixed_scale[0].target_dedicated_nodes
