@@ -8,6 +8,7 @@
         "bafastbrains",
         "fastbrains",
         "fsmounts",
+        "opentelemetry",
         "venv"
     ],
     "ignoreWords": [],

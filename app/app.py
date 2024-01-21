@@ -1,21 +1,21 @@
-"""Module providing a function printing python version."""
+"""Application Insights example application."""
 import os
-from applicationinsights import TelemetryClient
 from dotenv import load_dotenv
+
+from azure.monitor.opentelemetry import configure_azure_monitor
+from opentelemetry import trace
 
 load_dotenv()
 
-appi_key = os.environ['APPLICATION_INSIGHTS_INSTRUMENTATION_KEY']
+appi_key = os.environ['APPLICATION_INSIGHTS_CONNECTION_STRING']
 
-tc = TelemetryClient(appi_key)
+configure_azure_monitor(
+    connection_string=appi_key,
+)
 
-tc.track_event('Test event')
-tc.track_trace('Test trace', { 'foo': 'bar' })
-tc.track_metric('My Metric', 42)
+tracer = trace.get_tracer(__name__)
 
-# try:
-#     raise Exception('blah')
-# except:
-#     tc.track_exception()
+with tracer.start_as_current_span("hello"):
+    print("Hello, World!")
 
-tc.flush()
+input()

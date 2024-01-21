@@ -1,2 +1,2 @@
-applicationinsights
 python-dotenv
+azure-monitor-opentelemetry
