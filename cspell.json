@@ -4,9 +4,11 @@
     "dictionaryDefinitions": [],
     "dictionaries": [],
     "words": [
+        "appi",
         "bafastbrains",
         "fastbrains",
-        "fsmounts"
+        "fsmounts",
+        "venv"
     ],
     "ignoreWords": [],
     "import": []

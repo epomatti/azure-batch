@@ -115,6 +115,25 @@ Batch files are located in the [temporary storage][2].
 
 For the mounted storage, on [Ubuntu batch][3] the path is `/mnt/batch/tasks/fsmounts/blobs`.
 
+## Metrics
+
+From the renewed [official docs][4]:
+
+```sh
+python3 -m venv .venv
+source .venv/bin/activate
+
+python3 -m pip install --upgrade pip
+python3 -m pip install -r requirements.txt
+```
+
+For troubleshooting:
+
+```sh
+which python
+.venv/bin/python
+```
+
 
 ## Reference
 
@@ -124,3 +143,4 @@ For the mounted storage, on [Ubuntu batch][3] the path is `/mnt/batch/tasks/fsmo
 [1]: https://learn.microsoft.com/en-us/cli/azure/batch/task?view=azure-cli-latest#az-batch-task-create
 [2]: https://learn.microsoft.com/en-us/azure/batch/files-and-directories
 [3]: https://learn.microsoft.com/en-us/azure/batch/virtual-file-mount?tabs=linux
+[4]: https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-environments/
