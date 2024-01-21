@@ -117,6 +117,8 @@ For the mounted storage, on [Ubuntu batch][3] the path is `/mnt/batch/tasks/fsmo
 
 ## Metrics
 
+Detailed usage of the `applicationinsights` package can be found in the [full documentation][5]. For details on Azure Monitor custom metrics, [link][6] for the guidelines.
+
 From the renewed [official docs][4]:
 
 ```sh
@@ -144,3 +146,5 @@ which python
 [2]: https://learn.microsoft.com/en-us/azure/batch/files-and-directories
 [3]: https://learn.microsoft.com/en-us/azure/batch/virtual-file-mount?tabs=linux
 [4]: https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-environments/
+[5]: https://shipit.dev/python-appinsights/
+[6]: https://learn.microsoft.com/en-us/azure/azure-monitor/essentials/metrics-custom-overview
