@@ -4,6 +4,8 @@
 
 <img src=".docs/azure-batch.png" />
 
+## Setup
+
 Copy the `.auto.tfvars` file template:
 
 ```sh
