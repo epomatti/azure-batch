@@ -33,3 +33,7 @@ variable "keyvault_id" {
 variable "cmk_versionless_id" {
   type = string
 }
+
+variable "batch_allow_ip" {
+  type = string
+}

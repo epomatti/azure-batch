@@ -58,6 +58,7 @@ module "batch_account" {
 
   network_account_access         = var.network_account_access
   network_node_management_access = var.network_account_access
+  batch_allow_ip                 = var.batch_allow_ip
 }
 
 module "batch_pool" {

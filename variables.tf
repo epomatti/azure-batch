@@ -29,9 +29,9 @@ variable "public_address_provisioning_type" {
   type = string
 }
 
-# variable "" {
-  
-# }
+variable "batch_allow_ip" {
+  type = string
+}
 
 ### Network ###
 variable "network_account_access" {

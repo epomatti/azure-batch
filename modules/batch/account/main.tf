@@ -38,9 +38,17 @@ resource "azurerm_batch_account" "main" {
   network_profile {
     account_access {
       default_action = var.network_account_access
+      ip_rule {
+        action   = "Allow"
+        ip_range = var.batch_allow_ip
+      }
     }
     node_management_access {
       default_action = var.network_node_management_access
+      ip_rule {
+        action   = "Allow"
+        ip_range = var.batch_allow_ip
+      }
     }
   }
 
