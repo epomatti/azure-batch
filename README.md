@@ -63,7 +63,7 @@ az batch task show \
   --task-id sciTask001
 ```
 
-View task output
+View task output:
 
 ```sh
 az batch task file list \
