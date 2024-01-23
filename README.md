@@ -145,6 +145,13 @@ which python
 .venv/bin/python
 ```
 
+## User access
+
+A user named `BatchUser` will be created.
+
+This user has `Reader` permissions in the resource group, and `Contributor` access in the Batch account.
+
+It should be possible to created Pools with this user.
 
 ## Reference
 

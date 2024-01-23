@@ -111,3 +111,10 @@ module "vm_win" {
   jumpbox_size   = var.jumpbox_win_vm_size
   jumpbox_subnet = module.network.jumpbox_subnet_id
 }
+
+module "entra" {
+  source            = "./modules/entra"
+  resource_group_id = azurerm_resource_group.main.id
+  batch_account_id  = module.batch_account.batch_account_id
+  tenant_domain     = var.tenant_domain
+}

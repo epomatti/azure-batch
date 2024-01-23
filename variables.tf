@@ -33,6 +33,11 @@ variable "batch_allow_ip" {
   type = string
 }
 
+### Entra ID ###
+variable "tenant_domain" {
+  type = string
+}
+
 ### Network ###
 variable "network_account_access" {
   type    = string
